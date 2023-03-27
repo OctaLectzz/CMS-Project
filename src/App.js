@@ -28,7 +28,10 @@ function App() {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="sticky-top shadow">
         <Container>
 
-          <Navbar.Brand as={Link} to="/">Postweb</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/" className="fw-bold">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" className="mb-1 me-1" width="40" alt="logo" />
+            Lotus
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -36,11 +39,12 @@ function App() {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>HOME</Nav.Link>
               <Nav.Link as={Link} to="/posts" className={location.pathname === '/posts' ? 'nav-link active' : 'nav-link'}>POSTS</Nav.Link>
+              <Nav.Link as={Link} to="/contact" className={location.pathname === '/contact' ? 'nav-link active' : 'nav-link'} disabled>CONTACT</Nav.Link>
             </Nav>
 
             <Nav className="float-end">
-              <Nav.Link as={Link} to="/Register" className="nav-link me-2">Register</Nav.Link>
-              <Nav.Link as={Link} to="/Login" className="nav-link me-2">Login</Nav.Link>
+              <Nav.Link as={Link} to="/Register" className={location.pathname === '/Register' ? 'nav-link active me-2' : 'nav-link me-2'}>Register</Nav.Link>
+              <Nav.Link as={Link} to="/Login" className={location.pathname === '/Login' ? 'nav-link active me-2' : 'nav-link me-2'}>Login</Nav.Link>
             </Nav>
 
           </Navbar.Collapse>

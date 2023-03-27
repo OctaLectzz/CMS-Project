@@ -73,7 +73,7 @@ function PostIndex() {
                 <Row>
                     {posts.map((post) => (
                         <Col key={post.id} md={4}>
-                            <Card className="my-3 shadow-sm" style={{border: "1px rgb(155, 155, 155) solid"}}>
+                            <Card className="my-3 shadow" style={{border: "1px rgb(155, 155, 155) solid"}}>
                                 <Button variant="transparant text-start p-0 border-0" className="text-decoration-none text-dark" as={Link} to={`/post/${post.id}`}>
                                 
                                     <small className="position-absolute p-1 px-2 text-light text-opacity-75 bg-dark bg-opacity-50">{post.views} Views</small>
