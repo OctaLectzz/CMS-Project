@@ -4,28 +4,30 @@ import { Card, Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 function SinglePost() {
+
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const { id } = useParams();
 
-  // useEffect Post
+  
   useEffect(() => {
+
+    // useEffect Post
     const fetchPost = async () => {
       const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
       const data = await response.data.data;
       setPost(data);
     };
     fetchPost();
-  }, [id]);
 
-  // useEffect Comment
-  useEffect(() => {
+    // useEffect Comment
     const fetchComments = async () => {
       const response = await axios.get(`http://localhost:8000/api/posts/${id}/comments`);
       const data = await response.data.data;
       setComments(data);
     };
     fetchComments();
+
   }, [id]);
 
 
@@ -47,29 +49,38 @@ function SinglePost() {
                 <p>
                   <small>By : <span className="text-primary">{post.created_by}</span></small>
                 </p>
+                <img src="https://picsum.photos/800/450" alt="Random" className="img-fluid mb-2" />
               </div>
 
-              <p className="mb-5 fs-4">{post.body}</p>
+              <p className="mb-3 fs-4">{post.body}</p>
 
-              <Button as={Link} to="/posts" variant="primary">Back</Button>
+              <Button as={Link} to="/posts" variant="dark">Back</Button>
 
               <small className="text-muted float-end fs-6">{post.created_at}</small>
             </Col>
 
-            <Col md="8">
-              <p className="mb-0 fs-3 fw-bold">Comments : </p>
+            <Col md="10" className="mt-5">
+              <h1 className="mb-0 fw-bold">Comments <small>( {comments.length} )</small></h1>
+              <hr></hr>
               <div className="ms-3">
                 {comments.length > 0 ? (
+
                   comments.map((comment) => (
                     <Card key={comment.id} className="my-3">
                       <Card.Body>
-                        <img src={comment.images} alt="User Avatar" className="rounded rounded-circle p-1 mb-2" width="70" height="70" style={{border: "1px rgb(155, 155, 155) solid"}} />
-                        <Card.Title className="card-title fw-bold">{comment.user && comment.user.name}</Card.Title>
+
+                        <img src="https://picsum.photos/40/40" alt="User Avatar" className="rounded rounded-circle p-1 mb-2" width="40" height="40" style={{border: "1px rgb(155, 155, 155) solid"}} />
+                        
+                        <span className="card-title fw-bold ms-2">{comment.name}</span>
+
                         <Card.Text className="card-text">{comment.content}</Card.Text>
+
                         <small className="text-muted fw-bold float-end">{comment.created_at}</small>
+
                       </Card.Body>
                     </Card>
                   ))
+                  
                 ) : (
                   <p>No comments yet.</p>
                 )}
@@ -86,6 +97,7 @@ function SinglePost() {
       </Row>
     </Container>
   );
+
 }
 
 export default SinglePost;

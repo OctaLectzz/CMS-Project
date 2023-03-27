@@ -2,6 +2,7 @@
 import { Navbar, Container, Nav } from 'react-bootstrap'
 //import react router dom
 import { Switch, Route, Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 
 //import component Home
@@ -19,6 +20,8 @@ import PostEdit from './pages/posts/Edit'     //import component Post Edit
 
 
 function App() {
+  const location = useLocation();
+
   return (
     <div>
 
@@ -31,13 +34,13 @@ function App() {
           <Navbar.Collapse id="responsive-navbar-nav">
 
             <Nav className="me-auto">
-              <Nav.Link as={Link} to="/" className="nav-link">HOME</Nav.Link>
-              <Nav.Link as={Link} to="/posts" className="nav-link">POSTS</Nav.Link>
+              <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>HOME</Nav.Link>
+              <Nav.Link as={Link} to="/posts" className={location.pathname === '/posts' ? 'nav-link active' : 'nav-link'}>POSTS</Nav.Link>
             </Nav>
 
             <Nav className="float-end">
-              <Nav.Link as={Link} to="/Register" className="nav-link">Register</Nav.Link>
-              <Nav.Link as={Link} to="/Login" className="nav-link">Login</Nav.Link>
+              <Nav.Link as={Link} to="/Register" className="nav-link me-2">Register</Nav.Link>
+              <Nav.Link as={Link} to="/Login" className="nav-link me-2">Login</Nav.Link>
             </Nav>
 
           </Navbar.Collapse>

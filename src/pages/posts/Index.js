@@ -46,8 +46,18 @@ function PostIndex() {
         setLoading(false);
     }
 
-    // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+    // Pagination
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+          setCurrentPage(currentPage + 1);
+        }
+    };
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+    };
 
 
     return (
@@ -59,41 +69,45 @@ function PostIndex() {
                 </div>
             ) : (
                 <>
+
                 <Row>
                     {posts.map((post) => (
-                    <Col key={post.id} md={4}>
-                        <Card className="my-3 shadow-sm">
-                            <Card.Body>
-                                <a className="text-decoration-none text-dark" href={`/post/${post.id}`}>
-
+                        <Col key={post.id} md={4}>
+                            <Card className="my-3 shadow-sm" style={{border: "1px rgb(155, 155, 155) solid"}}>
+                                <Button variant="transparant text-start p-0 border-0" className="text-decoration-none text-dark" as={Link} to={`/post/${post.id}`}>
+                                
                                     <small className="position-absolute p-1 px-2 text-light text-opacity-75 bg-dark bg-opacity-50">{post.views} Views</small>
 
                                     <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />
+                                
 
-                                    <h5 className="card-title mb-1">{post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}</h5>
+                                    <Card.Body className="pt-0">
 
-                                    <small className="small text-muted ms-1">
-                                        By. <span className="text-info me-2">{post.created_by}</span> 
-                                        ◉ <small>{post.created_at}</small>
-                                    </small>
+                                        <small className="small text-muted">
+                                            By. <span className="text-info me-2">{post.created_by}</span> 
+                                            <small className="float-end">{post.created_at}</small>
+                                        </small>
 
-                                    <Card.Text className="mt-3">{post.body.length > 100 ? post.body.substring(0, 100) + '...' : post.body}</Card.Text>
+                                        <h5 className="card-title mt-3 fw-bold">{post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}</h5>
 
-                                    <Button variant="dark" href={`/post/${post.id}`}>
-                                        Read More
-                                    </Button>
+                                        <Card.Text>{post.body.length > 120 ? post.body.substring(0, 120) + '...' : post.body}</Card.Text>
 
-                                    <small className="float-end text-danger fw-bold mt-2">{post.likes} Likes</small>
-                                    
-                                </a>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                                        <Button variant="dark" as={Link} to={`/post/${post.id}`} className="mt-2">
+                                            Read More
+                                        </Button>
+
+                                        <small className="float-end text-danger fw-bold mt-4">{post.likes} Likes</small>
+                                            
+                                    </Card.Body>
+
+                                </Button>
+                            </Card>
+                        </Col>
                     ))}
                 </Row>
 
                 <Pagination className="float-end mt-2">
-                    <Pagination.Prev />
+                    <Pagination.Prev onClick={handlePrevPage} disabled={currentPage === 1} />
                     {[...Array(totalPages)].map((_, index) => (
                     <Pagination.Item
                         key={index}
@@ -103,8 +117,9 @@ function PostIndex() {
                         {index + 1}
                     </Pagination.Item>
                     ))}
-                    <Pagination.Next />
+                    <Pagination.Next onClick={handleNextPage} disabled={currentPage === totalPages} />
                 </Pagination>
+                
                 </>
             )}
         </Container>
