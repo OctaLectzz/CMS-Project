@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Form, Card, Container, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios';
+import Page from './../Page';
 
 
 function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const history = useHistory();
 
 
     const handleSubmit = async (event) => {
@@ -17,21 +20,28 @@ function Login() {
                 email,
                 password,
             });
-            localStorage.setItem('access_token', response.data.access_token);
+            localStorage.setItem('token', response.data.data.token);
             // Redirect
-            window.location.href = '/posts';
+            history.push('/posts');
         } catch (error) {
-            console.error(error);
+            setError(error.response.data.message);
         }
     };
 
 
     return (
         <Container className="mt-3">
-
             <Row className="justify-content-center">
                 <Col md='4'>
+
+                    {error && <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                        {error}
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>}
+
                     <Card className="p-4 shadow">
+
+                        <Page pageTitle="Login" hideTitle={true} />
                         
                         <div className="text-center">
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style={{width: '185px'}} alt="logo" />
@@ -41,19 +51,20 @@ function Login() {
                         <p className="text-center">Please login to your account</p>
 
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group controlId="formBasicEmail" className="mb-3">
-                                <Form.Control type="email" placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)}/>
-                            </Form.Group>
+                            <Form.Floating className="mb-3">
+                                <Form.Control type="email" placeholder="name@example.com" id="email" value={email} onChange={event => setEmail(event.target.value)} />
+                                <label for="email">Email address</label>
+                            </Form.Floating>
 
-                            <Form.Group controlId="formBasicPassword">
-                                <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} />
-                            </Form.Group>
+                            <Form.Floating>
+                                <Form.Control type="password" placeholder="Password" id="password" value={password} onChange={event => setPassword(event.target.value)} />
+                                <label for="password">Password</label>
+                            </Form.Floating>
 
                             <Button variant="dark" type="submit" className="mt-3 w-100">
                                 Login
                             </Button>
                         </Form>
-
 
                         <div className="text-center pt-1 mb-5 pb-1">
                             <a className="text-muted" href="">Forgot password?</a>

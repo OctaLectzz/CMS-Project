@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 //import component Bootstrap React
 import { Navbar, Container, Nav } from 'react-bootstrap'
 //import react router dom
@@ -5,14 +6,14 @@ import { Switch, Route, Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 
 
-//import component Home
+// Home
 import Home from './pages/Home'
 
 // Authentication
 import Login from './pages/authenticate/Login';
 import Regiser from './pages/authenticate/Register';
 
-// Posts //
+// Posts
 import PostIndex from './pages/posts/Index'   // import component Post Index
 import SinglePost from './pages/posts/Show';  // import component Post Show
 import PostCreate from './pages/posts/Create' // import component Post Create
@@ -21,6 +22,15 @@ import PostEdit from './pages/posts/Edit'     //import component Post Edit
 
 function App() {
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token")); 
+ 
+
+  const handleLogout = () => { 
+    localStorage.removeItem("token"); 
+    setIsLoggedIn(false); 
+    alert("Logout Successfully."); 
+  };
+
 
   return (
     <div>
@@ -42,10 +52,16 @@ function App() {
               <Nav.Link as={Link} to="/contact" className={location.pathname === '/contact' ? 'nav-link active' : 'nav-link'} disabled>CONTACT</Nav.Link>
             </Nav>
 
-            <Nav className="float-end">
-              <Nav.Link as={Link} to="/Register" className={location.pathname === '/Register' ? 'nav-link active me-2' : 'nav-link me-2'}>Register</Nav.Link>
-              <Nav.Link as={Link} to="/Login" className={location.pathname === '/Login' ? 'nav-link active me-2' : 'nav-link me-2'}>Login</Nav.Link>
-            </Nav>
+            {isLoggedIn ? (
+              <Nav className="float-end">
+                <Nav.Link onClick={handleLogout} className="nav-link">Logout</Nav.Link>
+              </Nav>
+            ) : (
+              <Nav className="float-end">
+                <Nav.Link as={Link} to="/Register" className={location.pathname === '/Register' ? 'nav-link active me-2' : 'nav-link me-2'}>Register</Nav.Link>
+                <Nav.Link as={Link} to="/Login" className={location.pathname === '/Login' ? 'nav-link active me-2' : 'nav-link me-2'}>Login</Nav.Link>
+              </Nav>
+            )}
 
           </Navbar.Collapse>
 

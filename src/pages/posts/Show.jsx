@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import CommentShow from './../comments/Show';
+import Page from './../Page';
 
 
 function SinglePost() {
@@ -27,6 +28,7 @@ function SinglePost() {
       <Row className="justify-content-center bg-white py-5 shadow">
         {post ? (
           <>
+            <Page pageTitle={post.title} hideTitle={true} />
 
             <Col md="8" className="mb-5">
               <div>
@@ -43,9 +45,7 @@ function SinglePost() {
                 <img src="https://picsum.photos/800/450" alt="Random" className="img-fluid mb-2" />
               </div>
 
-              <p className="mb-3 fs-4">
-                {post.body}
-              </p>
+              <div className="mb-3 fs-5" dangerouslySetInnerHTML={{__html: post.body}} />
 
               <Button as={Link} to="/posts" variant="dark">Back</Button>
 
@@ -55,7 +55,6 @@ function SinglePost() {
             <Col md="10" className="mt-5">
               <CommentShow />
             </Col>
-
           </>
         ) : (
           <div className="d-flex align-items-center justify-content-center">
