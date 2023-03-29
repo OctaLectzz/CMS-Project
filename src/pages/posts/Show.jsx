@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
-import CommentShow from './../comments/Show';
 import Page from './../Page';
+
+// Comments
+import CommentShow from './../comments/Show';
 
 
 function SinglePost() {
@@ -53,7 +55,9 @@ function SinglePost() {
             </Col>
 
             <Col md="10" className="mt-5">
+
               <CommentShow />
+
             </Col>
           </>
         ) : (
