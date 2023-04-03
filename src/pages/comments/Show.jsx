@@ -3,19 +3,20 @@ import { useParams } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import CommentCreate from './Create';
+import CommentEdit from './Edit';
 
 
 export default function CommentShow() {
 
     const [comments, setComments] = useState([]);
-    const { id } = useParams();
+    var { id } = useParams();
 
 
     // useEffect Comment
     useEffect(() => {
         const fetchComments = async () => {
             const response = await axios.get(`http://localhost:8000/api/posts/${id}/comments`);
-            const data = await response.data.data;
+            const data = response.data.data;
             setComments(data);
         };
         fetchComments();
@@ -44,12 +45,16 @@ export default function CommentShow() {
 
                                 <small className="text-muted fw-bold float-end">{comment.created_at}</small>
 
+                                <div className="mt-3">
+                                    <CommentEdit comment={comment} />
+                                </div>
+
                             </Card.Body>
                         </Card>
                     ))
                     
                 ) : (
-                    <p>No comments yet.</p>
+                    <div className="alert alert-warning alert-dismissible fade show my-3">No comments yet.</div>
                 )}
             </div>
         </>

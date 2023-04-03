@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Form, Card, Container, Row, Col, Button } from 'react-bootstrap'
+import { Form, Card, Container, Row, Col, Button, Spinner } from 'react-bootstrap'
 import axios from 'axios';
-import Page from './../Page';
+import Page from '../../Page';
 
 
 function Login() {
@@ -11,11 +11,13 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const history = useHistory();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            setIsSubmitting(true);
             const response = await axios.post('http://localhost:8000/api/auth/login', {
                 email,
                 password,
@@ -25,6 +27,8 @@ function Login() {
             history.push('/posts');
         } catch (error) {
             setError(error.response.data.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -32,12 +36,12 @@ function Login() {
     return (
         <Container className="mt-3">
             <Row className="justify-content-center">
-                <Col md='4'>
 
-                    {error && <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                        {error}
-                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>}
+            {error && 
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">{error}</div>
+            }
+
+                <Col md='4'>
 
                     <Card className="p-4 shadow">
 
@@ -51,7 +55,7 @@ function Login() {
                         <p className="text-center">Please login to your account</p>
 
                         <Form onSubmit={handleSubmit}>
-                            <Form.Floating className="mb-3">
+                            <Form.Floating className="mb-2">
                                 <Form.Control type="email" placeholder="name@example.com" id="email" value={email} onChange={event => setEmail(event.target.value)} />
                                 <label for="email">Email address</label>
                             </Form.Floating>
@@ -61,13 +65,20 @@ function Login() {
                                 <label for="password">Password</label>
                             </Form.Floating>
 
-                            <Button variant="dark" type="submit" className="mt-3 w-100">
-                                Login
+                            <Button type="submit" variant="dark" className="mt-3 w-100" disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <div>
+                                        <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                        <span>Loading</span>
+                                    </div>
+                                ) : (
+                                    'Login'
+                                )}
                             </Button>
                         </Form>
 
                         <div className="text-center pt-1 mb-5 pb-1">
-                            <a className="text-muted" href="">Forgot password?</a>
+                            <Button variant="link" className="text-muted" as={Link} to="/ForgotPassword">Forgot password?</Button>
                         </div>
 
                         <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">

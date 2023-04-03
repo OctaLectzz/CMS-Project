@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Card, Container, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios';
-import Page from './../Page';
+import Page from '../../Page';
 
 
 function Register() {
@@ -48,23 +48,23 @@ function Register() {
                         <p className="text-center">Please register for next content</p>
 
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group controlId="formBasicName" className="mb-3 form-floating">
+                            <Form.Group controlId="formBasicName" className="mb-2 form-floating">
                                 <Form.Control type="name" placeholder="Name" id="name" value={name} onChange={(event) => setName(event.target.value)}/>
                                 <label for="name">Name</label>
                             </Form.Group>
 
-                            <Form.Group controlId="formBasicEmail" className="mb-3 form-floating">
+                            <Form.Group controlId="formBasicEmail" className="mb-2 form-floating">
                                 <Form.Control type="email" placeholder="Email" id="email" value={email} onChange={(event) => setEmail(event.target.value)}/>
                                 <label for="email">Email address</label>
                             </Form.Group>
 
-                            <Form.Group controlId="formBasicPassword" className="mb-3 form-floating">
+                            <Form.Group controlId="formBasicPassword" className="mb-2 form-floating">
                                 <Form.Control type="password" placeholder="Password" id="password" value={password} onChange={(event) => setPassword(event.target.value)} />
                                 <label for="password">Password</label>
                             </Form.Group>
 
                             <Form.Group controlId="formBasicConfirmPassword" className="form-floating">
-                                <Form.Control type="c_password" placeholder="Confirm Password" id="c_password" value={c_password} onChange={(event) => setConfirmPassword(event.target.value)} />
+                                <Form.Control type="password" placeholder="Confirm Password" id="c_password" value={c_password} onChange={(event) => setConfirmPassword(event.target.value)} />
                                 <label for="c_password">Confirm Password</label>
                             </Form.Group>
 
@@ -74,7 +74,7 @@ function Register() {
                         </Form>
 
                         <div className="text-center pt-1 mb-5 pb-1">
-                            <a className="text-muted" href="">Forgot password?</a>
+                            <Button variant="link" className="text-muted" as={Link} to="/ForgotPassword">Forgot password?</Button>
                         </div>
 
                         <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">

@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 
 //import Title Page
-import Page from './../Page';
+import Page from '../../Page';
 
 function PostIndex() {
 

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Button, Form, Card } from 'react-bootstrap';
+import { Button, Form, Card, Spinner } from 'react-bootstrap';
 
 const CommentCreate = ({ id }) => {
 
     const [comment, setComment] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -13,6 +14,7 @@ const CommentCreate = ({ id }) => {
         const token = localStorage.getItem('token');
 
         try {
+            setIsSubmitting(true);
             const response = await axios.post(`http://localhost:8000/api/posts/${id}/comments/create`, {
                 content: comment
             }, {
@@ -22,10 +24,11 @@ const CommentCreate = ({ id }) => {
             });
 
             console.log(response.data);
-            // Reset form after successful submission
-            setComment('');
+            setComment("");
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -38,28 +41,38 @@ const CommentCreate = ({ id }) => {
     }
 
 
-  return (
-    <Card className="p-3">
-        {isLoggedIn() ? (
-            <Form onSubmit={handleSubmit}>
-                <textarea
-                    placeholder="Comment"
-                    className="form-control"
-                    id="comment"
-                    value={comment}
-                    maxLength="255"
-                    rows={3}
-                    onChange={e => setComment(e.target.value)}
-                    required
-                ></textarea>
+    return (
+        <Card className="p-3">
+            {isLoggedIn() ? (
+                <Form onSubmit={handleSubmit}>
+                    <textarea
+                        placeholder="Comment"
+                        className="form-control"
+                        id="comment"
+                        value={comment}
+                        maxLength="255"
+                        rows={3}
+                        onChange={(event) => setComment(event.target.value)}
+                        required
+                    ></textarea>
 
-                <Button type="submit" variant="dark" className="mt-3">Submit</Button>
-            </Form>
-        ) : (
-            <div className="alert alert-danger alert-dismissible fade show">Please <Button as={Link} to="/Login" variant="transparant" className="p-0 mb-1 text-primary">Login</Button> to leave a Comment</div>
-        )}
-    </Card>
-  );
+                    <Button type="submit" variant="dark" className="mt-3" disabled={isSubmitting}>
+                        {isSubmitting ? (
+                            <div>
+                                <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                <span>Loading</span>
+                            </div>
+                        ) : (
+                            'Submit'
+                        )}
+                    </Button>
+                </Form>
+            ) : (
+                <div className="alert alert-danger alert-dismissible fade show">Please <Button as={Link} to="/Login" variant="transparant" className="p-0 mb-1 text-primary">Login</Button> to leave a Comment</div>
+            )}
+        </Card>
+    );
+  
 }
 
 export default CommentCreate;

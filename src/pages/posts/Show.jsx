@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
-import Page from './../Page';
+import Page from '../../Page';
 
 // Comments
 import CommentShow from './../comments/Show';
@@ -10,8 +10,8 @@ import CommentShow from './../comments/Show';
 
 function SinglePost() {
 
-  const [post, setPost] = useState(null);
-  const { id } = useParams();
+  const [post, setPost] = useState({});
+  var { id } = useParams();
 
   
   // useEffect Post

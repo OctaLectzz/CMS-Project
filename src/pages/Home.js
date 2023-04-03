@@ -1,11 +1,11 @@
 //import component Bootstrap React
-import { Card, Container, Row, Col , Button } from 'react-bootstrap'
+import { Container, Row, Col , Button } from 'react-bootstrap'
 
 //import react router dom
 import { Link } from "react-router-dom";
 
 //import Title Page
-import Page from './Page';
+import Page from '../Page';
 
 
 function Home() {
