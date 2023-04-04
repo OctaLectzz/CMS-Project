@@ -24,7 +24,7 @@ function Login() {
             });
             localStorage.setItem('token', response.data.data.token);
             // Redirect
-            history.push('/posts');
+            history.push('/profile');
         } catch (error) {
             setError(error.response.data.message);
         } finally {
