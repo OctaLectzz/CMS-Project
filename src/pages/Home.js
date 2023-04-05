@@ -1,5 +1,5 @@
 //import component Bootstrap React
-import { Container, Row, Col , Button } from 'react-bootstrap'
+import { Container, Row, Col , Button, Carousel } from 'react-bootstrap'
 
 //import react router dom
 import { Link } from "react-router-dom";
@@ -24,7 +24,36 @@ function Home() {
                     </Col>
 
                     <Col md={6}>
-                        <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid" />
+                        {/* <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid" /> */}
+                        <Carousel>
+                                <Carousel.Item>
+                                    <Button as={Link} to="post/1" variant="transparant" className="p-0">
+                                        <img className="d-block w-100" src="https://picsum.photos/id/1/800/500" alt="First slide" />
+                                        <Carousel.Caption>
+                                            <h3>How to make a Brownies</h3>
+                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                        </Carousel.Caption>
+                                    </Button>
+                                </Carousel.Item>
+                            <Carousel.Item>
+                                <Button as={Link} to="post/2" variant="transparant" className="p-0">
+                                    <img className="d-block w-100" src="https://picsum.photos/id/2/800/500" alt="Second slide" />
+                                    <Carousel.Caption>
+                                        <h3>Tutorial Bernafas</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    </Carousel.Caption>
+                                </Button>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <Button as={Link} to="post/3" variant="transparant" className="p-0">
+                                    <img className="d-block w-100" src="https://picsum.photos/id/3/800/500" alt="Third slide" />
+                                    <Carousel.Caption>
+                                        <h3>Tutorial jadi Kerenn</h3>
+                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                    </Carousel.Caption>
+                                </Button>
+                            </Carousel.Item>
+                        </Carousel>
                     </Col>
 
                 </Row>

@@ -28,7 +28,7 @@ function SinglePost() {
   return (
     <Container className="mt-3">
       <Row className="justify-content-center bg-white py-5 shadow">
-        {post ? (
+        {post.title ? (
           <>
             <Page pageTitle={post.title} hideTitle={true} />
 

@@ -22,11 +22,14 @@ import ResetPassword from './pages/authenticate/ResetPassword';
 // Posts
 import PostIndex from './pages/posts/Index'   // import component Post Index
 import SinglePost from './pages/posts/Show';  // import component Post Show
-import PostCreate from './pages/posts/Create' // import component Post Create
-import PostEdit from './pages/posts/Edit'     //import component Post Edit
 
 // Dashboard
-import Dashboard from './dashboard/Home'
+import DashboardHome from './dashboard/pages/Home';
+
+// Posts
+import DashboardPost from './dashboard/pages/posts';
+import CreatePost from './dashboard/pages/posts/Create';
+import EditPost from './dashboard/pages/posts/Edit';
 
 
 function App() {
@@ -126,12 +129,15 @@ function App() {
 
         {/* Posts */}
         <Route exact path="/posts" component={PostIndex} />
-        <Route exact path="/posts/create" component={PostCreate} />
-        <Route exact path="/posts/edit/:id" component={PostEdit} />
         <Route exact path="/post/:id" component={SinglePost} />
 
-        {/* Dashboard */}
-        <Route exact path="/dashboard" component={Dashboard} />
+        {/* Dashboard Home */}
+        <Route exact path="/dashboard" component={DashboardHome} />
+
+        {/* Dashboard Posts */}
+        <Route exact path="/dashboard/posts" component={DashboardPost} />
+        <Route exact path="/dashboard/posts/create" component={CreatePost} />
+        <Route exact path="/dashboard/posts/edit/:id" component={EditPost} />
 
       </Switch>
       

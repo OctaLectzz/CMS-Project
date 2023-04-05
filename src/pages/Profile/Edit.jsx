@@ -30,9 +30,15 @@ function EditProfile() {
             });
             const data = response.data.data;
             setUser(data);
+            setName(data.name);
+            setEmail(data.email);
+            setTanggalLahir(data.tanggal_lahir);
+            setJenisKelamin(data.jenis_kelamin);
+            setAlamat(data.alamat);
+            setBiodata(data.biodata)
         };
         getUser();
-    });
+    }, []);
 
     const editHandler = async (e) => {
         e.preventDefault();
@@ -92,14 +98,14 @@ function EditProfile() {
 
                                 <div className="text-center mt-5">
                                     <span className="fw-bold">Name : </span>
-                                    <Form.Group className="d-inline-block">
+                                    <Form.Group className="d-inline-block w-50">
                                         <Form.Control type="name" value={name} placeholder="Name" className="mb-1" onChange={(event) => setName(event.target.value)} />
                                     </Form.Group>
 
                                     <br />
 
                                     <span className="fw-bold">Email : </span>
-                                    <Form.Group  className="d-inline-block">
+                                    <Form.Group  className="d-inline-block w-50">
                                         <Form.Control type="email" value={email} placeholder="Email" className="mb-1" onChange={(event) => setEmail(event.target.value)} />
                                     </Form.Group>
                                 </div>
@@ -130,7 +136,7 @@ function EditProfile() {
 
                                     <p className="mb-2">
                                         <span className="fw-bold">Alamat : </span>
-                                        <Form.Group className="d-inline-block">
+                                        <Form.Group className="d-inline-block w-75">
                                             <Form.Control type="text" value={alamat} placeholder="Alamat" className="mb-1" onChange={(event) => setAlamat(event.target.value)} />
                                         </Form.Group>
                                     </p>
@@ -138,7 +144,7 @@ function EditProfile() {
                                 
                                 <hr />
                                 <Form.Group>
-                                    <Form.Control as="textarea" value={biodata} rows={3} placeholder="Masukkan Biodata" className="mb-1" onChange={(event) => setBiodata(event.target.value)} />
+                                    <Form.Control as="textarea" value={biodata} rows={5} placeholder="Masukkan Biodata" className="mb-1" onChange={(event) => setBiodata(event.target.value)} />
                                 </Form.Group>
 
                                 <Button type="submit" variant="dark" className="mt-3 w-100" disabled={isSubmitting}>
