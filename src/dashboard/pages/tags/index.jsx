@@ -5,10 +5,10 @@ import axios from 'axios';
 import Dashboard from '../../AppDashboard';
 
 
-function PostIndex() {
+function TagIndex() {
 
     // Define State
-    const [posts, setPosts] = useState([]);
+    const [tags, setTags] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // Paginate
@@ -18,24 +18,17 @@ function PostIndex() {
     // Token
     const token = localStorage.getItem('token');
 
-     //function "fetchData"
-     const fectData = async () => {
+    //function "fetchData"
+    const fectData = async () => {
 
         //fetching
-        const response = await axios.get(`http://localhost:8000/api/posts?page=${currentPage}`);
-
-        //get response data
+        const response = await axios.get(`http://localhost:8000/api/tags?page=${currentPage}`);
         const data = await response.data.data;
 
-        //assign response data to state "posts"
-        setPosts(data);
-
-        //set state "totalPages"
+        setTags(data);
         setTotalPages(response.data.meta.last_page);
-
-        // set state "loading" menjadi false setelah data diambil
         setLoading(false);
-
+        
     }
 
     // useEffect hook
@@ -46,11 +39,11 @@ function PostIndex() {
     }, [currentPage]);  // fetch data every time the current page changes
 
 
-    //function "deletePost"
-    const deletePost = (id) => {
+    //function "deleteTag"
+    const deleteTag = (id) => {
 
         //sending
-        axios.delete(`http://localhost:8000/api/posts/delete/${id}`, {
+        axios.delete(`http://localhost:8000/api/tags/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -84,7 +77,7 @@ function PostIndex() {
                     <Col md={12}>
                         <Card className="border-0 rounded shadow-lg">
                             <Card.Body>
-                                <Button as={Link} to="/dashboard/posts/create" variant="dark" className="mb-3">TAMBAH POST</Button>
+                                <Button as={Link} to="/dashboard/tags/create" variant="dark" className="mb-3">TAMBAH TAG</Button>
                                 {loading ? (
                                     <div className="d-flex align-items-center justify-content-center">
                                         <Spinner animation="border" className="me-2" />
@@ -97,23 +90,22 @@ function PostIndex() {
                                             <thead>
                                                 <tr>
                                                     <th>NO.</th>
-                                                    <th className="text-center">TITLE</th>
-                                                    <th className="text-center">CONTENT</th>
+                                                    <th className="text-center">NAME</th>
+                                                    <th className="text-center">DESCRIPTION</th>
                                                     <th className="col-2 text-center">CREATED BY</th>
                                                     <th className="text-center col-2">ACTION</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                { posts.map((post, index) => (
-                                                    <tr key={ post.id }>
+                                                { tags.map((tag, index) => (
+                                                    <tr key={ tag.id }>
                                                         <td>{ index + 1 }</td>
-                                                        <td>{ post.title }</td>
-                                                        <td dangerouslySetInnerHTML={{__html: post.body.length > 200 ? post.body.substring(0, 200) + '...' : post.body}} />
-                                                        <td>{ post.created_by }</td>
+                                                        <td>{ tag.name }</td>
+                                                        <td>{tag.description}</td>
+                                                        <td>{ tag.created_by }</td>
                                                         <td className="text-center">
-                                                            <Button as={Link} to={`/post/${post.id}`} variant="primary" size="sm" className="me-1 mb-1">Show</Button>
-                                                            <Button as={Link} to={`/dashboard/posts/edit/${post.id}`} variant="warning" size="sm" className="me-1 mb-1">Edit</Button>
-                                                            <Button onClick={() => deletePost(post.id)} variant="danger" size="sm" className="me-1 mb-1">Delete</Button>
+                                                            <Button as={Link} to={`/dashboard/tags/edit/${tag.id}`} variant="warning" size="sm" className="me-1 mb-1">Edit</Button>
+                                                            <Button onClick={() => deleteTag(tag.id)} variant="danger" size="sm" className="me-1 mb-1">Delete</Button>
                                                         </td>
                                                     </tr>
                                                 )) }
@@ -144,4 +136,4 @@ function PostIndex() {
     );
 }
 
-export default PostIndex;
+export default TagIndex;

@@ -3,14 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import Page from '../../Page';
-
-// Comments
 import CommentShow from './../comments/Show';
 
 
 function SinglePost() {
 
   const [post, setPost] = useState({});
+  const [tags, setTags] = useState([]);
   var { id } = useParams();
 
   
@@ -19,7 +18,9 @@ function SinglePost() {
     const fetchPost = async () => {
       const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
       const data = await response.data.data;
+      const tag = response.data.data.tags;
       setPost(data);
+      setTags(tag);
     };
     fetchPost();
   }, [id]);
@@ -27,7 +28,7 @@ function SinglePost() {
 
   return (
     <Container className="mt-3">
-      <Row className="justify-content-center bg-white py-5 shadow">
+      <Row className="justify-content-center bg-white bg-opacity-75 py-5 shadow">
         {post.title ? (
           <>
             <Page pageTitle={post.title} hideTitle={true} />
@@ -49,9 +50,15 @@ function SinglePost() {
 
               <div className="mb-3 fs-5" dangerouslySetInnerHTML={{__html: post.body}} />
 
-              <Button as={Link} to="/posts" variant="dark">Back</Button>
+              <Button as={Link} to="/posts" variant="dark" className="mb-5">Back</Button>
 
               <small className="text-muted float-end fs-6">{post.created_at}</small>
+
+              <div>
+                {tags.map((tag) => (
+                  <Link key={tag.id} to={`/posts/${tag.name}`} className="mx-1 text-decoration-none d-inline-block">#{tag.name}</Link>
+                ))}
+              </div>
             </Col>
 
             <Col md="10" className="mt-5">

@@ -1,77 +1,62 @@
 //import hook useState from react
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 //import component Bootstrap React
 import { Card, Container, Row, Col , Form, Button, Alert, Spinner } from 'react-bootstrap';
+
 //import axios
 import axios from 'axios';
+
 //import hook history dari react router dom
 import { useHistory } from "react-router-dom";
+
 //sidebar
 import Dashboard from '../../AppDashboard';
 
-
-function CreatePost() {
+function CreateTag() {
 
     //state
-    const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // state validation
+
+    //state validation
     const [validation, setValidation] = useState({});
+
     //history
     const history = useHistory();
+
     //token
     const token = localStorage.getItem('token');
 
-    // Tag
-    const [tags, setTags] = useState([]);
-    const [tag, setTag] = useState([]);
-    const handleTagChange = (event) => { 
-        const tagId = parseInt(event.target.value); 
-        if (event.target.checked) { 
-            setTag([...tag, tagId]); 
-        } else { 
-            setTag(tag.filter((id) => id !== tagId)); 
-        } 
-    };
-
-    useEffect(() => {
-
-        getTags();
-
-    },[]);
-
-    // method "storePost"
-    const storePost = async (e) => {
+    //method "storeTag"
+    const storeTag = async (e) => {
         e.preventDefault();
         
         setIsSubmitting(true);
-        // send data to server
-        await axios.post('http://localhost:8000/api/posts/create', {
-            title: title,
-            body: body,
-            tags: tag
+        //send data to server
+        await axios.post('http://localhost:8000/api/tags/create', {
+            name: name,
+            description: description
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
         .then(() => {
+
             setIsSubmitting(false);
             //redirect
-            history.push('/dashboard/posts');
+            history.push('/dashboard/tags');
+
         })
         .catch((error) => {
+
             //assign validation on state
             setValidation(error.response.data);
         })
+        
     };
-
-    const getTags = async () => {
-        const response = await axios.get('http://localhost:8000/api/tagpost');
-        const data = await response.data.data;
-        setTags(data);
-    }
 
     return (
         <>
@@ -93,26 +78,16 @@ function CreatePost() {
                                         </Alert>
                                 }
                                 
-                                <Form onSubmit={ storePost }>
+                                <Form onSubmit={ storeTag }>
                                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                                        <Form.Label>TITLE</Form.Label>
-                                        <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan Title" />
+                                        <Form.Label>NAME</Form.Label>
+                                        <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Masukkan name" />
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>CONTENT</Form.Label>
-                                        <Form.Control as="textarea" rows={3} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan Content" />
+                                        <Form.Label>DESCRIPTION</Form.Label>
+                                        <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Masukkan Description" />
                                     </Form.Group>
-
-                                    <div className="mb-3">
-                                        <Form.Label className="d-flex">TAGS</Form.Label>
-                                        {tags.map((tag) => (
-                                            <div key={tag.id} className="form-check-inline me-2 mb-2">
-                                                <input type="checkbox" class="btn-check" id={tag.id} value={tag.id} onChange={handleTagChange} />
-                                                <label class="btn btn-outline-primary" for={tag.id}>{tag.name}</label><br />
-                                            </div>
-                                        ))}
-                                    </div>
 
                                     <Button type="submit" variant="dark" disabled={isSubmitting}>
                                         {isSubmitting ? (
@@ -134,4 +109,4 @@ function CreatePost() {
     );
 }
 
-export default CreatePost;
+export default CreateTag;

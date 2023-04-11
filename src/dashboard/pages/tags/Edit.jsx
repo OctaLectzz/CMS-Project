@@ -5,12 +5,12 @@ import { useHistory, useParams } from "react-router-dom";
 import Dashboard from '../../AppDashboard';
 
 
-function EditPost() {
+function EditTag() {
 
     //state
-    const [post, setPost] = useState({});
-    const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
+    const [tag, setTag] = useState({});
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     //state validation
@@ -25,56 +25,38 @@ function EditPost() {
     //get ID from parameter URL
     const { id } = useParams();
 
-    // Tag
-    const [tags, setTags] = useState([]);
-    const [tag, setTag] = useState([]);
-    const handleTagChange = (event) => { 
-        const tagId = parseInt(event.target.value); 
-        if (event.target.checked) { 
-            setTag([...tag, tagId]); 
-        } else { 
-            setTag(tag.filter((id) => id !== tagId)); 
-        } 
-    };
-
 
     //hook useEffect
     useEffect(() => {
 
-        //function "getPostById"
-        const getPostById = async() => {
+        //function "getTagById"
+        const getTagById = async() => {
+
             //get data from server
-            const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
+            const response = await axios.get(`http://localhost:8000/api/tags/${id}`);
             //get response data
             const data = await response.data.data
 
             //assign data to state
-            setPost(data)
-            setTitle(data.title);
-            setBody(data.body);
+            setTag(data)
+            setName(data.name);
+            setDescription(data.description);
 
         };
-        getPostById()
-
-        const getTags = async () => {
-            const response = await axios.get('http://localhost:8000/api/tagpost');
-            const data = await response.data.data;
-            setTags(data);
-        }
-        getTags()
+        getTagById()
         
     }, [id]);
 
 
-    //function "updatePost"
-    const updatePost = async (e) => {
+    //function "updateTag"
+    const updateTag = async (e) => {
         e.preventDefault();
         
         setIsSubmitting(true);
         //send data to server
-        await axios.put(`http://localhost:8000/api/posts/edit/${id}`, {
-            title: title,
-            body: body
+        await axios.put(`http://localhost:8000/api/tags/edit/${id}`, {
+            name: name,
+            description: description
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -84,7 +66,7 @@ function EditPost() {
 
             setIsSubmitting(false);
             //redirect
-            history.push('/dashboard/posts');
+            history.push('/dashboard/tags');
 
         })
         .catch((error) => {
@@ -103,7 +85,7 @@ function EditPost() {
                 <Row>
                     <Col md={12}>
                         <Card className="border-0 rounded shadow-sm">
-                            {post.title ? (
+                            {tag ? (
                                 <Card.Body>
 
                                     {
@@ -117,26 +99,16 @@ function EditPost() {
                                             </Alert>
                                     }
 
-                                    <Form onSubmit={ updatePost }>
+                                    <Form onSubmit={ updateTag }>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label>TITLE</Form.Label>
-                                            <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan Title" />
+                                            <Form.Label>NAME</Form.Label>
+                                            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Masukkan Name" />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>CONTENT</Form.Label>
-                                            <Form.Control as="textarea" rows={3} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan Content" />
+                                            <Form.Label>DESCRIPTION</Form.Label>
+                                            <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Masukkan Description" />
                                         </Form.Group>
-
-                                        <div className="mb-3">
-                                            <Form.Label className="d-flex">TAGS</Form.Label>
-                                            {tags.map((tag) => (
-                                                <div key={tag.id} className="form-check-inline me-2 mb-2">
-                                                    <input type="checkbox" class="btn-check" id={tag.id} value={tag.id} onChange={handleTagChange} />
-                                                    <label class="btn btn-outline-primary" for={tag.id}>{tag.name}</label><br />
-                                                </div>
-                                            ))}
-                                        </div>
 
                                         <Button type="submit" variant="dark" disabled={isSubmitting}>
                                             {isSubmitting ? (
@@ -164,4 +136,4 @@ function EditPost() {
     );
 }
 
-export default EditPost;
+export default EditTag;

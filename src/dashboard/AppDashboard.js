@@ -19,15 +19,18 @@ function Dashboard() {
     <>
       <Button variant="transparant" className="w-100 shadow-none text-start" onClick={handleToggleSidebar}>
         <Col xs={12} md={3} className={`sidebar ${isOpen ? 'open shadow-lg' : 'shadow-lg'}`}>
-          <h3 className="fw-bold fs-5 text-center">DASHBOARD</h3>
+          <h3 className="fw-bold fs-4 text-center">DASHBOARD</h3>
           <hr />
-          <div className="d-none d-md-block justify-content-center">
+          <div className="d-md-block justify-content-center">
             <ul className="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <Button as={Link} to="/dashboard" variant="transparant" className={location.pathname === '/dashboard' ? 'nav-link active link-dark' : 'nav-link link-dark'}>Home</Button>
+                <Button as={Link} to="/dashboard" variant="transparant" className={location.pathname === '/dashboard' ? 'nav-link active link-dark' : 'nav-link link-dark'}>Home <i class="bi bi-house-fill fs-3 float-end"></i></Button>
               </li>
               <li>
-                <Button as={Link} to="/dashboard/posts" variant="transparant" className={location.pathname === '/dashboard/posts' ? 'nav-link active link-dark' : 'nav-link link-dark'}>Posts</Button>
+                <Button as={Link} to="/dashboard/posts" variant="transparant" className={location.pathname === '/dashboard/posts' ? 'nav-link active link-dark' : 'nav-link link-dark'}>Posts <i class="bi bi-postcard-fill float-end fs-3"></i></Button>
+              </li>
+              <li>
+                <Button as={Link} to="/dashboard/tags" variant="transparant" className={location.pathname === '/dashboard/tags' ? 'nav-link active link-dark' : 'nav-link link-dark'}>Tags <i class="bi bi-tags-fill float-end fs-3"></i></Button>
               </li>
             </ul>
           </div>

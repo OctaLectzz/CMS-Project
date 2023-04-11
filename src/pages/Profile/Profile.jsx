@@ -55,19 +55,19 @@ function Profile() {
                             <div className="mt-5 fs-5">
                                 <p className="mb-2">
                                     <span className="fw-bold">Tanggal Lahir : </span>
-                                    {user.tanggal_lahir === null ? <span className="text-danger">Tidak didefinikan</span> : user.tanggal_lahir}
+                                    {user.tanggal_lahir === null ? <span className="text-danger">Tidak didefinisikan</span> : user.tanggal_lahir}
                                 </p>
                                 <p className="mb-2">
                                     <span className="fw-bold">Jenis Kelamin : </span>
-                                    {user.jenis_kelamin === null ? <span className="text-danger">Tidak didefinikan</span> : user.jenis_kelamin}
+                                    {user.jenis_kelamin === null ? <span className="text-danger">Tidak didefinisikan</span> : user.jenis_kelamin}
                                 </p>
                                 <p className="mb-2">
                                     <span className="fw-bold">Role : </span>
-                                    {user.role === null ? <span className="text-danger">Tidak didefinikan</span> : user.role}
+                                    {user.role === null ? <span className="text-danger">Tidak didefinisikan</span> : user.role}
                                 </p>
                                 <p className="mb-2">
                                     <span className="fw-bold">Alamat : </span>
-                                    {user.alamat === null ? <span className="text-danger">Tidak didefinikan</span> : user.alamat}
+                                    {user.alamat === null ? <span className="text-danger">Tidak didefinisikan</span> : user.alamat}
                                 </p>
                             </div>
 
