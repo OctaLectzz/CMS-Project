@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 //sidebar
 import Dashboard from '../../AppDashboard';
+//page
+import Page from '../../../Page';
 
 
 function CreatePost() {
@@ -76,6 +78,7 @@ function CreatePost() {
     return (
         <>
             <Dashboard />
+            <Page pageTitle="Create Post" hideTitle={true} />
             <Container className="mt-3">
                 <Row>
                     <Col md="{12}">

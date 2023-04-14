@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Table, Pagination, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Table, Pagination, Spinner, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import Dashboard from '../../AppDashboard';
+import Page from '../../../Page';
 
 
 function TagIndex() {
@@ -10,6 +11,7 @@ function TagIndex() {
     // Define State
     const [tags, setTags] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [validate, setValidate] = useState(true);
 
     // Paginate
     const [currentPage, setCurrentPage] = useState(1); //menambah state currentPage
@@ -49,7 +51,7 @@ function TagIndex() {
             }
         }).then((response) => {
             fectData();
-            console.log(response.data)
+            setValidate(response.data)
         });
 
         //panggil function "fetchData"
@@ -72,9 +74,13 @@ function TagIndex() {
     return (
         <>
             <Dashboard />
+            <Page pageTitle="Dashboard Tags" hideTitle={true} />
             <Container>
                 <Row>
                     <Col md={12}>
+
+                        {validate.message && <Alert variant="danger">{ validate.message }</Alert>}
+
                         <Card className="border-0 rounded shadow-lg">
                             <Card.Body>
                                 <Button as={Link} to="/dashboard/tags/create" variant="dark" className="mb-3">TAMBAH TAG</Button>

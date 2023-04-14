@@ -1,11 +1,13 @@
 //import component Bootstrap React
 import { Card, Container, Row, Col } from 'react-bootstrap'
 import Dashboard from '../AppDashboard';
+import Page from '../../Page';
 
 function DashboardHome() {
     return (
         <>
             <Dashboard />
+            <Page pageTitle="Dashboard Home" hideTitle={true} />
             <Container>
                 <Row>
                     <Col md={12}>

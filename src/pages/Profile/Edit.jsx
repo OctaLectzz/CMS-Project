@@ -10,7 +10,7 @@ function EditProfile() {
 
     const [user, setUser] = useState({});
     const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    // const [email, setEmail] = useState("");
     const [tanggal_lahir, setTanggalLahir] = useState("");
     const [jenis_kelamin, setJenisKelamin] = useState("");
     const [alamat, setAlamat] = useState("");
@@ -31,7 +31,7 @@ function EditProfile() {
             const data = response.data.data;
             setUser(data);
             setName(data.name);
-            setEmail(data.email);
+            // setEmail(data.email);
             setTanggalLahir(data.tanggal_lahir);
             setJenisKelamin(data.jenis_kelamin);
             setAlamat(data.alamat);
@@ -49,7 +49,7 @@ function EditProfile() {
             "http://localhost:8000/api/profile/edit",
             {
                 name: name,
-                email: email,
+                // email: email,
                 tanggal_lahir: tanggal_lahir,
                 jenis_kelamin: jenis_kelamin,
                 alamat: alamat,
@@ -102,12 +102,12 @@ function EditProfile() {
                                         <Form.Control type="name" value={name} placeholder="Name" className="mb-1" onChange={(event) => setName(event.target.value)} />
                                     </Form.Group>
 
-                                    <br />
+                                    {/* <br />
 
                                     <span className="fw-bold">Email : </span>
                                     <Form.Group  className="d-inline-block w-50">
                                         <Form.Control type="email" value={email} placeholder="Email" className="mb-1" onChange={(event) => setEmail(event.target.value)} />
-                                    </Form.Group>
+                                    </Form.Group> */}
                                 </div>
                                 
                                 <div className="mt-5 fs-5">

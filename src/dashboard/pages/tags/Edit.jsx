@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-b
 import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
 import Dashboard from '../../AppDashboard';
+import Page from '../../../Page';
 
 
 function EditTag() {
@@ -81,11 +82,12 @@ function EditTag() {
     return (
         <>
             <Dashboard />
+            <Page pageTitle="Edit Tag" hideTitle={true} />
             <Container>
                 <Row>
                     <Col md={12}>
                         <Card className="border-0 rounded shadow-sm">
-                            {tag ? (
+                            {tag.name ? (
                                 <Card.Body>
 
                                     {
@@ -100,12 +102,12 @@ function EditTag() {
                                     }
 
                                     <Form onSubmit={ updateTag }>
-                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                        <Form.Group className="mb-3" controlId="formBasicName">
                                             <Form.Label>NAME</Form.Label>
                                             <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Masukkan Name" />
                                         </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Group className="mb-3" controlId="formBasicDescription">
                                             <Form.Label>DESCRIPTION</Form.Label>
                                             <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Masukkan Description" />
                                         </Form.Group>

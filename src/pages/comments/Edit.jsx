@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { Form, Button, Modal } from 'react-bootstrap';
+import { useParams, useHistory, Link } from 'react-router-dom';
+import { Form, Button, Modal, Dropdown, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function CommentEdit(props) {
     const { comment, onClose } = props;
     const [content, setContent] = useState(comment.content);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const history = useHistory();
     const { id } = useParams();
@@ -18,6 +19,7 @@ export default function CommentEdit(props) {
 
     const handleEdit = async () => {
         try {
+            setIsSubmitting(true);
             const response = await axios.put(`http://localhost:8000/api/comments/edit/${comment.id}`, {
                 content: content
                 }, {
@@ -26,13 +28,16 @@ export default function CommentEdit(props) {
                 }
             });
             console.log(response);
-            onClose();
+            handleClose();
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     const handleDelete = async () => {
+        
         try {
             const response = await axios.delete(`http://localhost:8000/api/comments/delete/${comment.id}`, {
                 headers: {
@@ -40,7 +45,6 @@ export default function CommentEdit(props) {
                 }
             });
             console.log(response);
-            onClose();
             history.go(0);
         } catch (error) {
             console.error(error);
@@ -50,7 +54,6 @@ export default function CommentEdit(props) {
     const handleClose = () => {
         setShowModal(false);
     };
-
     const handleShow = () => {
         setShowModal(true);
     };
@@ -58,12 +61,24 @@ export default function CommentEdit(props) {
 
     return (
         <>
-            <Button variant="dark" className="mx-1 badge" onClick={handleShow}>
-                Edit
-            </Button>
-            <Button variant="dark" className="mx-1 badge" onClick={handleDelete}>
-                Delete
-            </Button>
+            <Dropdown className="float-end">
+                <Dropdown.Toggle variant="default" className="dropdown-toggle dropdown-toggle-no-arrow" id="dropdownMenuButton2">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="dropdown-menu-dark">
+                    <Dropdown.Item>
+                        <Button variant="transparant" className="badge p-0 fs-6" onClick={handleShow}>
+                            Edit
+                        </Button>
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item>
+                        <Button variant="transparant" className="badge p-0 fs-6" onClick={handleDelete}>
+                            Delete
+                        </Button>
+                    </Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
             
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -80,8 +95,15 @@ export default function CommentEdit(props) {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="dark" onClick={handleEdit}>
-                        Save Changes
+                    <Button type="submit" variant="dark" onClick={handleEdit} disabled={isSubmitting}>
+                        {isSubmitting ? (
+                            <div>
+                                <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                <span>Loading</span>
+                            </div>
+                        ) : (
+                            'Save Changes'
+                        )}
                     </Button>
                 </Modal.Footer>
             </Modal>

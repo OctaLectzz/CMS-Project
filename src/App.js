@@ -33,7 +33,7 @@ import EditTag from './dashboard/pages/tags/Edit';
 
 
 // Private Route
-const Dashboard = ({ component: Component, ...rest }) => {
+const Auth = ({ component: Component, ...rest }) => {
   const isLoggedIn = localStorage.getItem('token') !== null;
   return (
     <Route {...rest} render={(props) =>
@@ -50,7 +50,7 @@ const Dashboard = ({ component: Component, ...rest }) => {
     />
   );
 }
-const Auth = ({ component: Component, ...rest }) => {
+const Guest = ({ component: Component, ...rest }) => {
   const isLoggedIn = localStorage.getItem('token') == null;
   return (
     <Route {...rest} render={(props) =>
@@ -127,10 +127,10 @@ function App() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
+            <Nav className="m-auto">
               <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>HOME</Nav.Link>
               <Nav.Link as={Link} to="/posts" className={location.pathname === '/posts' || location.pathname.includes('/post') ? 'nav-link active' : 'nav-link'}>POSTS</Nav.Link>
-              <Nav.Link as={Link} to="/profile" className={location.pathname === '/profile' || location.pathname.includes('/profile/edit') ? 'nav-link active' : 'nav-link'}>PROFILE</Nav.Link>
+              <Nav.Link as={Link} to="/profile" className={location.pathname.includes('/profile') ? 'nav-link active' : 'nav-link'}>PROFILE</Nav.Link>
               <Nav.Link as={Link} to="/contact" className={location.pathname === '/contact' ? 'nav-link active' : 'nav-link'} disabled>CONTACT</Nav.Link>
             </Nav>
 
@@ -140,8 +140,8 @@ function App() {
               </Nav>
             ) : (
               <Nav className="float-end">
-                <Nav.Link as={Link} to="/Register" className={location.pathname === '/Register' ? 'nav-link active me-2' : 'nav-link me-2'}>Register</Nav.Link>
-                <Nav.Link as={Link} to="/Login" className={location.pathname === '/Login' ? 'nav-link active me-2' : 'nav-link me-2'}>Login</Nav.Link>
+                <Nav.Link as={Link} to="/Register" className={location.pathname === '/Register' ? 'nav-link active' : 'nav-link'}>Register</Nav.Link>
+                <Nav.Link as={Link} to="/Login" className={location.pathname === '/Login' ? 'nav-link active fw-bold rounded' : 'nav-link  fw-bold rounded'} style={{ backgroundColor: '#ce5200' }}><i class="bi bi-box-arrow-in-right"></i> Login</Nav.Link>
               </Nav>
             )}
           </Navbar.Collapse>
@@ -154,29 +154,29 @@ function App() {
 
         {/* Home */}
         <Route exact path="/" component={Home} />
-        {/* Profile */}
-        <Dashboard exact path="/profile" component={Profile} />
-        <Dashboard exact path="/profile/edit" component={EditProfile} />
-        {/* Authentiation */}
-        <Auth exact path="/login" component={Login} />
-        <Auth exact path="/register" component={Regiser} />
-        <Auth exact path="/ForgotPassword" component={ForgotPassword} />
-        <Auth exact path="/ResetPassword" component={ResetPassword} />
         {/* Posts */}
         <Route exact path="/posts" component={PostIndex} />
         <Route exact path="/post/:id" component={SinglePost} />
         <Route exact path="/posts/:tag" component={PostTag} />
+        {/* Authentiation */}
+        <Guest exact path="/login" component={Login} />
+        <Guest exact path="/register" component={Regiser} />
+        <Guest exact path="/ForgotPassword" component={ForgotPassword} />
+        <Guest exact path="/ResetPassword" component={ResetPassword} />
+        {/* Profile */}
+        <Auth exact path="/profile" component={Profile} />
+        <Auth exact path="/profile/edit" component={EditProfile} />
 
         {/* Dashboard Home */}
-        <Dashboard exact path="/dashboard" component={DashboardHome} />
+        <Auth exact path="/dashboard" component={DashboardHome} />
         {/* Dashboard Posts */}
-        <Dashboard exact path="/dashboard/posts" component={DashboardPost} />
-        <Dashboard exact path="/dashboard/posts/create" component={CreatePost} />
-        <Dashboard exact path="/dashboard/posts/edit/:id" component={EditPost} />
+        <Auth exact path="/dashboard/posts" component={DashboardPost} />
+        <Auth exact path="/dashboard/posts/create" component={CreatePost} />
+        <Auth exact path="/dashboard/posts/edit/:id" component={EditPost} />
         {/* Dashboard Tags */}
-        <Dashboard exact path="/dashboard/tags" component={DashboardTag} />
-        <Dashboard exact path="/dashboard/tags/create" component={CreateTag} />
-        <Dashboard exact path="/dashboard/tags/edit/:id" component={EditTag} />
+        <Auth exact path="/dashboard/tags" component={DashboardTag} />
+        <Auth exact path="/dashboard/tags/create" component={CreateTag} />
+        <Auth exact path="/dashboard/tags/edit/:id" component={EditTag} />
 
       </Switch>
       

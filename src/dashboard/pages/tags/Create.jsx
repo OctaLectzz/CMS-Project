@@ -13,6 +13,10 @@ import { useHistory } from "react-router-dom";
 //sidebar
 import Dashboard from '../../AppDashboard';
 
+//page
+import Page from '../../../Page';
+
+
 function CreateTag() {
 
     //state
@@ -61,6 +65,7 @@ function CreateTag() {
     return (
         <>
             <Dashboard />
+            <Page pageTitle="Create Tag" hideTitle={true} />
             <Container className="mt-3">
                 <Row>
                     <Col md="{12}">

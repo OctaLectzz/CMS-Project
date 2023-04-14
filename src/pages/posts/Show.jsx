@@ -15,15 +15,17 @@ function SinglePost() {
   
   // useEffect Post
   useEffect(() => {
-    const fetchPost = async () => {
-      const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
-      const data = await response.data.data;
-      const tag = response.data.data.tags;
-      setPost(data);
-      setTags(tag);
-    };
     fetchPost();
   }, [id]);
+
+
+  const fetchPost = async () => {
+    const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
+    const data = await response.data.data;
+    const tag = response.data.data.tags;
+    setPost(data);
+    setTags(tag);
+  };
 
 
   return (
@@ -63,7 +65,7 @@ function SinglePost() {
 
             <Col md="10" className="mt-5">
 
-              <CommentShow />
+              <CommentShow id={id} />
 
             </Col>
           </>

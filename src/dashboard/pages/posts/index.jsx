@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Table, Pagination, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Table, Pagination, Spinner, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import Dashboard from '../../AppDashboard';
+import Page from '../../../Page';
 
 
 function PostIndex() {
@@ -10,6 +11,7 @@ function PostIndex() {
     // Define State
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [validate, setValidate] = useState(true);
 
     // Paginate
     const [currentPage, setCurrentPage] = useState(1); //menambah state currentPage
@@ -56,7 +58,7 @@ function PostIndex() {
             }
         }).then((response) => {
             fectData();
-            console.log(response.data)
+            setValidate(response.data)
         });
 
         //panggil function "fetchData"
@@ -79,9 +81,13 @@ function PostIndex() {
     return (
         <>
             <Dashboard />
+            <Page pageTitle="Dashboard Posts" hideTitle={true} />
             <Container>
                 <Row>
                     <Col md={12}>
+
+                        {validate.message && <Alert variant="success">{ validate.message }</Alert>}
+
                         <Card className="border-0 rounded shadow-lg">
                             <Card.Body>
                                 <Button as={Link} to="/dashboard/posts/create" variant="dark" className="mb-3">TAMBAH POST</Button>

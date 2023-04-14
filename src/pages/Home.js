@@ -27,31 +27,31 @@ function Home() {
                         {/* <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid" /> */}
                         <Carousel>
                                 <Carousel.Item>
-                                    <Button as={Link} to="post/1" variant="transparant" className="p-0">
+                                    <Link as={Link} to="post/1" variant="transparant" className="p-0">
                                         <img className="d-block w-100" src="https://picsum.photos/id/1/800/500" alt="First slide" />
                                         <Carousel.Caption>
                                             <h3>How to make a Brownies</h3>
                                             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
                                         </Carousel.Caption>
-                                    </Button>
+                                    </Link>
                                 </Carousel.Item>
                             <Carousel.Item>
-                                <Button as={Link} to="post/2" variant="transparant" className="p-0">
+                                <Link as={Link} to="post/2" variant="transparant" className="p-0">
                                     <img className="d-block w-100" src="https://picsum.photos/id/2/800/500" alt="Second slide" />
                                     <Carousel.Caption>
                                         <h3>Tutorial Bernafas</h3>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                     </Carousel.Caption>
-                                </Button>
+                                </Link>
                             </Carousel.Item>
                             <Carousel.Item>
-                                <Button as={Link} to="post/3" variant="transparant" className="p-0">
+                                <Link as={Link} to="post/3" variant="transparant" className="p-0">
                                     <img className="d-block w-100" src="https://picsum.photos/id/3/800/500" alt="Third slide" />
                                     <Carousel.Caption>
                                         <h3>Tutorial jadi Kerenn</h3>
                                         <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
                                     </Carousel.Caption>
-                                </Button>
+                                </Link>
                             </Carousel.Item>
                         </Carousel>
                     </Col>
@@ -60,7 +60,7 @@ function Home() {
             </Container>
 
             <footer className="bg-secondary text-light py-3 mt-5 fixed-bottom">
-                <p className="text-center">&copy; My Website 2023  |  OctaLectzz</p>
+                <p className="text-center">&copy; Lotus Team 2023   |   OctaLectzz</p>
             </footer>
         </>
     );
