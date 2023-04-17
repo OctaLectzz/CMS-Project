@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner, Badge } from 'react-bootstrap';
 import axios from 'axios';
 import Page from '../../Page';
 import CommentShow from './../comments/Show';
@@ -13,6 +13,7 @@ function SinglePost() {
 
   const [post, setPost] = useState({});
   const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
   var { id } = useParams();
 
   
@@ -26,8 +27,10 @@ function SinglePost() {
     const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
     const data = await response.data.data;
     const tag = response.data.data.tags;
+    const category = response.data.data.categories;
     setPost(data);
     setTags(tag);
+    setCategories(category);
   };
 
 
@@ -46,12 +49,18 @@ function SinglePost() {
                 <small className="text-muted d-flex me-5">{post.views} Views</small>
               </div>
 
-              <div className="text-center mt-4 mb-4">
+              <div className="text-center mt-4">
                 <p className="mb-0 fs-3 fw-bold">{post.title}</p>
                 <p>
                   <small>By : <span className="text-primary">{post.created_by}</span></small>
                 </p>
-                <img src="https://picsum.photos/800/450" alt="Random" className="img-fluid mb-2" />
+                {post.postImages ? <img src={`http://localhost:8000/storage/postImages/${post.postImages}`} alt="Random" className="img-fluid mb-2" /> : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
+              </div>
+
+              <div className="mb-4 text-center">
+                {categories.map((category) => (
+                  <Link key={category.id} to={`/posts/${category.name}`} className="m-1 text-decoration-none d-inline-block px-2 text-info" style={{border: "1px solid", borderRadius: "20%"}}>{category.name}</Link>
+                ))}
               </div>
 
               <div className="mb-3 fs-5" dangerouslySetInnerHTML={{__html: post.body}} />

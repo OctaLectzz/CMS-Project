@@ -125,7 +125,7 @@ function PostIndex() {
                                 
                                     <small className="position-absolute p-1 px-2 text-light text-opacity-75 bg-dark bg-opacity-50">{post.views} Views</small>
 
-                                    {post.postImages ? post.postImages : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
+                                    {post.postImages ? <img src={`http://localhost:8000/storage/postImages/${post.postImages}`} alt="Random" className="img-fluid mb-2" /> : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
 
                                     <Card.Body className="pt-0">
 

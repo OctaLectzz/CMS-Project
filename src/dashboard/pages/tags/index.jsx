@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Table, Pagination, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Table, Pagination, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import Dashboard from '../../AppDashboard';
 import Page from '../../../Page';

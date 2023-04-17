@@ -30,6 +30,7 @@ import DashboardTag from './dashboard/pages/tags';
 import EditTag from './dashboard/pages/tags/Edit';
 // Categories
 import DashboardCategory from './dashboard/pages/categories';
+import EditCategory from './dashboard/pages/categories/Edit';
 
 
 // Private Route
@@ -177,6 +178,7 @@ function App() {
         <Auth exact path="/dashboard/tags/edit/:id" component={EditTag} />
         {/* Dashboard Categories */}
         <Auth exact path="/dashboard/categories" component={DashboardCategory} />
+        <Auth exact path="/dashboard/categories/edit/:id" component={EditCategory} />
 
       </Switch>
       

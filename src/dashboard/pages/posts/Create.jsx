@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function CreatePost() {
 
     //state
+    const [postImages, setPostImages] = useState('');
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,10 +34,22 @@ function CreatePost() {
             setTag(tag.filter((id) => id !== tagId)); 
         } 
     };
+    // Category
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState([]);
+    const handleCategoryChange = (event) => { 
+        const categoryId = parseInt(event.target.value); 
+        if (event.target.checked) { 
+            setCategory([...category, categoryId]); 
+        } else { 
+            setCategory(category.filter((id) => id !== categoryId)); 
+        } 
+    };
 
     useEffect(() => {
 
         getTags();
+        getCategories();
 
     },[]);
 
@@ -47,9 +60,11 @@ function CreatePost() {
         setIsSubmitting(true);
         // send data to server
         await axios.post('http://localhost:8000/api/posts/create', {
+            postImages: postImages,
             title: title,
             body: body,
-            tags: tag
+            tags: tag,
+            categories: category
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -72,6 +87,11 @@ function CreatePost() {
         const data = await response.data.data;
         setTags(data);
     }
+    const getCategories = async () => {
+        const response = await axios.get('http://localhost:8000/api/categorypost');
+        const data = await response.data.data;
+        setCategories(data);
+    }
 
     return (
         <>
@@ -80,29 +100,44 @@ function CreatePost() {
             </Button>
 
             <Modal show={showModal} onHide={handleClose}>
-                <Form onSubmit={ storePost }>
+                <Form onSubmit={ storePost } enctype="multipart/form-data">
 
                     <Modal.Header closeButton>
                         <Modal.Title>Create Post</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Group className="mb-3" controlId="formBasicImage">
+                            <Form.Label>IMAGE</Form.Label>
+                            <Form.Control type="file" value={postImages} onChange={(e) => setPostImages(e.target.value)} placeholder="Choose your Image" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicTitle">
                             <Form.Label>TITLE</Form.Label>
                             <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan Title" />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Group className="mb-3" controlId="formBasicContent">
                             <Form.Label>CONTENT</Form.Label>
                             <Form.Control as="textarea" rows={3} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan Content" />
                         </Form.Group>
 
                         <div className="mb-3">
+                            <Form.Label className="d-flex">CATEGORIES</Form.Label>
+                            {categories.map((category) => (
+                                <div key={category.id} className="form-check-inline me-2 mb-2">
+                                    <input type="checkbox" class="btn-check" id={`Category ${category.id}`} value={category.id} onChange={handleCategoryChange} />
+                                    <label class="btn btn-outline-success" for={`Category ${category.id}`}>{category.name}</label><br />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mb-3">
                             <Form.Label className="d-flex">TAGS</Form.Label>
                             {tags.map((tag) => (
                                 <div key={tag.id} className="form-check-inline me-2 mb-2">
-                                    <input type="checkbox" class="btn-check" id={tag.id} value={tag.id} onChange={handleTagChange} />
-                                    <label class="btn btn-outline-primary" for={tag.id}>{tag.name}</label><br />
+                                    <input type="checkbox" class="btn-check" id={`Tag ${tag.id}`} value={tag.id} onChange={handleTagChange} />
+                                    <label class="btn btn-outline-primary" for={`Tag ${tag.id}`}>{tag.name}</label><br />
                                 </div>
                             ))}
                         </div>

@@ -37,6 +37,17 @@ function EditPost() {
             setTag(tag.filter((id) => id !== tagId)); 
         } 
     };
+    // Category
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState([]);
+    const handleCategoryChange = (event) => { 
+        const categoryId = parseInt(event.target.value); 
+        if (event.target.checked) { 
+            setCategory([...category, categoryId]); 
+        } else { 
+            setCategory(category.filter((id) => id !== categoryId)); 
+        } 
+    };
 
 
     //hook useEffect
@@ -64,6 +75,12 @@ function EditPost() {
             setTags(data);
         }
         getTags()
+        const getCategories = async () => {
+            const response = await axios.get('http://localhost:8000/api/categorypost');
+            const data = await response.data.data;
+            setCategories(data);
+        }
+        getCategories()
         
     }, [id]);
 
@@ -117,6 +134,16 @@ function EditPost() {
                                             <Form.Label>CONTENT</Form.Label>
                                             <Form.Control as="textarea" rows={3} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan Content" />
                                         </Form.Group>
+
+                                        <div className="mb-3">
+                                            <Form.Label className="d-flex">CATEGORIES</Form.Label>
+                                            {categories.map((category) => (
+                                                <div key={category.id} className="form-check-inline me-2 mb-2">
+                                                    <input type="checkbox" class="btn-check" id={category.id} value={category.id} onChange={handleCategoryChange} />
+                                                    <label class="btn btn-outline-success" for={category.id}>{category.name}</label><br />
+                                                </div>
+                                            ))}
+                                        </div>
 
                                         <div className="mb-3">
                                             <Form.Label className="d-flex">TAGS</Form.Label>

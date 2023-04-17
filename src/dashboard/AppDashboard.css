@@ -23,3 +23,14 @@
 .bi {
   margin-top: -9px;
 }
+
+/* Home */
+.home {
+  filter: brightness(60%);
+  transition: all 0.4s ease;
+}
+.home:hover {
+  filter: brightness(100%);
+  background-color: rgba(0, 0, 0, 0.295);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
