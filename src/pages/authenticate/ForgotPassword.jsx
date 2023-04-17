@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Form, Card, Container, Row, Col, Button, Alert, Spinner } from 'react-bootstrap'
 import axios from 'axios';
 import Page from '../../Page';
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function ForgotPassword() {
 
     const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
-    const history = useHistory();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
 
@@ -18,12 +18,11 @@ function ForgotPassword() {
         try {
             setIsSubmitting(true);
             const response = await axios.post('http://localhost:8000/api/auth/forgot-password', { email });
-            setMessage(response.data.message);
-            setTimeout(() => {
-                history.push('/ResetPassword');
-            }, 10000);          
+            console.log(response.data.message);
+            toast.success('Link to Change Password has send in your Mail')
         } catch (error) {
-            setMessage(error.response.data.message);
+            console.log(error.response.data.message);
+            toast.error('Failed to Change Password!')
         } finally {
             setIsSubmitting(false);
         }
@@ -32,13 +31,8 @@ function ForgotPassword() {
 
     return (
         <Container className="mt-3">
+            <ToastContainer />
             <Row className="justify-content-center">
-
-                {message && (
-                    <Alert variant="info" className="text-center">
-                        {message && <p>{message}</p>}
-                    </Alert>
-                )}
 
                 <Col md='4'>
                     <Card className="p-4 shadow">
@@ -65,7 +59,7 @@ function ForgotPassword() {
                                         <span>Loading</span>
                                     </div>
                                 ) : (
-                                    'Send Token'
+                                    'Send Email'
                                 )}
                             </Button>
                         </Form>

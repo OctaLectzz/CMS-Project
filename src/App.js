@@ -24,12 +24,12 @@ import PostTag from './pages/posts/PostTag';  // import component Post Tag
 import DashboardHome from './dashboard/pages/Home';
 // Posts
 import DashboardPost from './dashboard/pages/posts';
-import CreatePost from './dashboard/pages/posts/Create';
 import EditPost from './dashboard/pages/posts/Edit';
 // Tags
 import DashboardTag from './dashboard/pages/tags';
-import CreateTag from './dashboard/pages/tags/Create';
 import EditTag from './dashboard/pages/tags/Edit';
+// Categories
+import DashboardCategory from './dashboard/pages/categories';
 
 
 // Private Route
@@ -162,7 +162,7 @@ function App() {
         <Guest exact path="/login" component={Login} />
         <Guest exact path="/register" component={Regiser} />
         <Guest exact path="/ForgotPassword" component={ForgotPassword} />
-        <Guest exact path="/ResetPassword" component={ResetPassword} />
+        <Guest exact path="/ResetPassword/:token" component={ResetPassword} />
         {/* Profile */}
         <Auth exact path="/profile" component={Profile} />
         <Auth exact path="/profile/edit" component={EditProfile} />
@@ -171,12 +171,12 @@ function App() {
         <Auth exact path="/dashboard" component={DashboardHome} />
         {/* Dashboard Posts */}
         <Auth exact path="/dashboard/posts" component={DashboardPost} />
-        <Auth exact path="/dashboard/posts/create" component={CreatePost} />
         <Auth exact path="/dashboard/posts/edit/:id" component={EditPost} />
         {/* Dashboard Tags */}
         <Auth exact path="/dashboard/tags" component={DashboardTag} />
-        <Auth exact path="/dashboard/tags/create" component={CreateTag} />
         <Auth exact path="/dashboard/tags/edit/:id" component={EditTag} />
+        {/* Dashboard Categories */}
+        <Auth exact path="/dashboard/categories" component={DashboardCategory} />
 
       </Switch>
       

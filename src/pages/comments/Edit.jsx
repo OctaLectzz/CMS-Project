@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Form, Button, Modal, Dropdown, Spinner } from 'react-bootstrap';
 import axios from 'axios';
+//toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CommentEdit(props) {
     const { comment, onClose } = props;
@@ -28,8 +31,10 @@ export default function CommentEdit(props) {
                 }
             });
             console.log(response);
+            toast.success('Berhasil Mengedit Komentar')
             handleClose();
         } catch (error) {
+            toast.error('Gagal Menghapus Komentar')
             console.error(error);
         } finally {
             setIsSubmitting(false);
@@ -45,9 +50,11 @@ export default function CommentEdit(props) {
                 }
             });
             console.log(response);
-            history.go(0);
+            window.location.reload()
+            toast.success('Berhasil Menghapus Komentar')
         } catch (error) {
             console.error(error);
+            toast.error('Gagal Menghapus Komentar')
         }
     };
 

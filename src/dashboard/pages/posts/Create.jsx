@@ -1,15 +1,12 @@
 //import hook useState from react
 import { useState, useEffect } from 'react';
 //import component Bootstrap React
-import { Card, Container, Row, Col , Form, Button, Alert, Spinner } from 'react-bootstrap';
+import { Modal, Form, Button, Spinner } from 'react-bootstrap';
 //import axios
 import axios from 'axios';
-//import hook history dari react router dom
-import { useHistory } from "react-router-dom";
-//sidebar
-import Dashboard from '../../AppDashboard';
-//page
-import Page from '../../../Page';
+//toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function CreatePost() {
@@ -18,12 +15,12 @@ function CreatePost() {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // state validation
-    const [validation, setValidation] = useState({});
-    //history
-    const history = useHistory();
     //token
     const token = localStorage.getItem('token');
+    //modal
+    const [showModal, setShowModal] = useState(false);
+    const handleClose = () => {setShowModal(false);};
+    const handleShow = () => {setShowModal(true);};
 
     // Tag
     const [tags, setTags] = useState([]);
@@ -60,12 +57,13 @@ function CreatePost() {
         })
         .then(() => {
             setIsSubmitting(false);
+            toast.success('Post Created Successfully!')
             //redirect
-            history.push('/dashboard/posts');
+            handleClose()
         })
         .catch((error) => {
-            //assign validation on state
-            setValidation(error.response.data);
+            setIsSubmitting(false);
+            toast.error('Silahkan Periksa Kembali!');
         })
     };
 
@@ -77,62 +75,57 @@ function CreatePost() {
 
     return (
         <>
-            <Dashboard />
-            <Page pageTitle="Create Post" hideTitle={true} />
-            <Container className="mt-3">
-                <Row>
-                    <Col md="{12}">
-                        <Card className="border-0 rounded shadow-sm">
-                            <Card.Body>
-                            
-                                {
-                                    validation.errors &&
-                                        <Alert variant="danger">
-                                            <ul class="mt-0 mb-0">
-                                                { validation.errors.map((error, index) => (
-                                                    <li key={index}>{ `${error.param} : ${error.msg}` }</li>
-                                                )) }
-                                            </ul>
-                                        </Alert>
-                                }
-                                
-                                <Form onSubmit={ storePost }>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                                        <Form.Label>TITLE</Form.Label>
-                                        <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan Title" />
-                                    </Form.Group>
+            <Button variant="dark" className="mb-3" onClick={handleShow}>
+                TAMBAH POST
+            </Button>
 
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>CONTENT</Form.Label>
-                                        <Form.Control as="textarea" rows={3} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan Content" />
-                                    </Form.Group>
+            <Modal show={showModal} onHide={handleClose}>
+                <Form onSubmit={ storePost }>
 
-                                    <div className="mb-3">
-                                        <Form.Label className="d-flex">TAGS</Form.Label>
-                                        {tags.map((tag) => (
-                                            <div key={tag.id} className="form-check-inline me-2 mb-2">
-                                                <input type="checkbox" class="btn-check" id={tag.id} value={tag.id} onChange={handleTagChange} />
-                                                <label class="btn btn-outline-primary" for={tag.id}>{tag.name}</label><br />
-                                            </div>
-                                        ))}
-                                    </div>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create Post</Modal.Title>
+                    </Modal.Header>
 
-                                    <Button type="submit" variant="dark" disabled={isSubmitting}>
-                                        {isSubmitting ? (
-                                            <div>
-                                                <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                                                <span>Loading</span>
-                                            </div>
-                                        ) : (
-                                            'SAVE'
-                                        )}
-                                    </Button>
-                                </Form>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
+                    <Modal.Body>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>TITLE</Form.Label>
+                            <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan Title" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>CONTENT</Form.Label>
+                            <Form.Control as="textarea" rows={3} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan Content" />
+                        </Form.Group>
+
+                        <div className="mb-3">
+                            <Form.Label className="d-flex">TAGS</Form.Label>
+                            {tags.map((tag) => (
+                                <div key={tag.id} className="form-check-inline me-2 mb-2">
+                                    <input type="checkbox" class="btn-check" id={tag.id} value={tag.id} onChange={handleTagChange} />
+                                    <label class="btn btn-outline-primary" for={tag.id}>{tag.name}</label><br />
+                                </div>
+                            ))}
+                        </div>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button type="submit" variant="dark" disabled={isSubmitting}>
+                            {isSubmitting ? (
+                                <div>
+                                    <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                    <span>Loading</span>
+                                </div>
+                            ) : (
+                                'Save'
+                            )}
+                        </Button>
+                    </Modal.Footer>
+
+                </Form>
+            </Modal>
         </>
     );
 }

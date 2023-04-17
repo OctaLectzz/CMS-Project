@@ -3,6 +3,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { Form, Card, Container, Row, Col, Button, Spinner } from 'react-bootstrap'
 import axios from 'axios';
 import Page from '../../Page';
+//toast
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Login() {
@@ -23,9 +26,11 @@ function Login() {
                 password,
             });
             localStorage.setItem('token', response.data.data.token);
+            toast.success('Login Berhasil')
             // Redirect
             history.push('/profile');
         } catch (error) {
+            toast.error('Gagal Login, Pastikan data yang anda masukkan benar!')
             setError(error.response.data.message);
         } finally {
             setIsSubmitting(false);
@@ -35,11 +40,8 @@ function Login() {
 
     return (
         <Container className="mt-3">
+            <ToastContainer />
             <Row className="justify-content-center">
-
-            {error && 
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">{error}</div>
-            }
 
                 <Col md='4'>
 

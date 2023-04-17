@@ -1,9 +1,12 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col, Image, Button, Spinner } from "react-bootstrap";
 import axios from 'axios';
 import Page from '../../Page';
+import EditProfile from "./Edit";
+//toast
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Profile() {
@@ -27,6 +30,7 @@ function Profile() {
 
     return (
         <Container>
+            <ToastContainer />
             
             <Row className="mt-5 bg-white p-5 shadow-lg">
                 {user.name ? (
@@ -43,9 +47,7 @@ function Profile() {
                             </div>
                         </Col>
                         <Col sm={12} md={6} lg={8}>
-                            <Button variant="warning" className="float-end" as={Link} to="/profile/edit">
-                                Edit
-                            </Button>
+                            <EditProfile />
 
                             <div className="text-center mt-5">
                                 <h5 className="display-6 fw-bold mb-0">{user.name}</h5>

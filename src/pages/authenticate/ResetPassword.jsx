@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Form, Card, Container, Row, Col, Button, Alert, Spinner } from 'react-bootstrap'
+import { useHistory, useParams } from 'react-router-dom';
+import { Form, Card, Container, Row, Col, Button, Spinner } from 'react-bootstrap'
 import axios from 'axios';
 import Page from '../../Page';
+//toast
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function ResetPassword() {
-    const [token, setToken] = useState('');
-    const [email, setEmail] = useState('');
+
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const history = useHistory();
-    const [message, setMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { token } = useParams("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setIsSubmitting(true);
-            const response = await axios.post('http://localhost:8000/api/auth/reset-password', { 
-                token,
+            const response = await axios.post(`http://localhost:8000/api/auth/reset-password`, {
                 email,
+                token,
                 password, 
                 password_confirmation: passwordConfirmation 
             });
-            setMessage(response.data.message);
-            setTimeout(() => {
-                history.push('/Login');
-            }, 2000); 
+            console.log(response.data.message);
+            toast.success('Password Changed Successfully!')
+            history.push('/login')
         } catch (error) {
-            setMessage(error.response.data.message);
+            console.log(error.response.data.message);
+            toast.error('Token tidak Valid, atau Format Password salah. Pastikan memasukkan data dengan benar!')
         } finally {
             setIsSubmitting(false);
         }
@@ -36,14 +40,8 @@ function ResetPassword() {
 
     return (
         <Container className="mt-3">
+            <ToastContainer />
             <Row className="justify-content-center">
-
-                {message && (
-                    <Alert variant="info" className="text-center">
-                        {message && <p>{message}</p>}
-                    </Alert>
-                )}
-
                 <Col md='4'>
                     <Card className="p-4 shadow">
 
@@ -58,10 +56,10 @@ function ResetPassword() {
                         <p className="text-center text-danger fw-bold">NOTE : Get Token in your Email</p>
 
                         <Form onSubmit={handleSubmit}>
-                            <Form.Floating className="mb-2">
+                            {/* <Form.Floating className="mb-2">
                                 <Form.Control type="token" placeholder="Token" id="token" value={token} onChange={(e) => setToken(e.target.value)} />
                                 <label for="token">Token</label>
-                            </Form.Floating>
+                            </Form.Floating> */}
 
                             <Form.Floating className="mb-2">
                                 <Form.Control type="email" placeholder="Email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />

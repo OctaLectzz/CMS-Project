@@ -4,6 +4,10 @@ import { Container, Row, Col, Card, Button, Table, Pagination, Spinner, Alert } 
 import axios from 'axios';
 import Dashboard from '../../AppDashboard';
 import Page from '../../../Page';
+import CreateTag from './Create';
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function TagIndex() {
@@ -52,6 +56,9 @@ function TagIndex() {
         }).then((response) => {
             fectData();
             setValidate(response.data)
+            toast.success('Tag Deleted Successfully!')
+        }).catch(() => {
+            toast.error('Failed Deleted Tag!')
         });
 
         //panggil function "fetchData"
@@ -76,14 +83,14 @@ function TagIndex() {
             <Dashboard />
             <Page pageTitle="Dashboard Tags" hideTitle={true} />
             <Container>
+                <ToastContainer />
+
                 <Row>
                     <Col md={12}>
 
-                        {validate.message && <Alert variant="danger">{ validate.message }</Alert>}
-
                         <Card className="border-0 rounded shadow-lg">
                             <Card.Body>
-                                <Button as={Link} to="/dashboard/tags/create" variant="dark" className="mb-3">TAMBAH TAG</Button>
+                                <CreateTag />
                                 {loading ? (
                                     <div className="d-flex align-items-center justify-content-center">
                                         <Spinner animation="border" className="me-2" />

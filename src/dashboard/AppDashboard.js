@@ -32,6 +32,9 @@ function Dashboard() {
               <li>
                 <Button as={Link} to="/dashboard/tags" variant="transparant" className={location.pathname.includes('/dashboard/tags') ? 'nav-link active link-dark' : 'nav-link link-dark'}>Tags <i class="bi bi-tags-fill float-end fs-3"></i></Button>
               </li>
+              <li>
+                <Button as={Link} to="/dashboard/categories" variant="transparant" className={location.pathname.includes('/dashboard/categories') ? 'nav-link active link-dark' : 'nav-link link-dark'}>Categories <i class="bi bi-list-columns-reverse float-end fs-3"></i></Button>
+              </li>
             </ul>
           </div>
         </Col>

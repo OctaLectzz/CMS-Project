@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 //import component Bootstrap React
-import { Card, Container, Row, Col, Button, Pagination, Spinner } from 'react-bootstrap';
+import { Card, Container, Row, Col, Button, Pagination, Spinner, Carousel } from 'react-bootstrap';
 
 //import react router dom
 import { Link } from "react-router-dom";
@@ -74,6 +74,48 @@ function PostIndex() {
                 <>
 
                 <Row>
+                    <Col md={12} className="mb-3">
+                        <div className="d-flex justify-content-center">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" width="150" alt="logo" />
+                        </div>
+                        <h1 className="text-center mb-0">
+                            WELCOME TO LOTUS POSTS
+                        </h1>
+                        <p className="text-center mt-0 fs-5">Create Your posts in Lotus now!</p>
+                    </Col>
+
+                    <Col md={12} className="mb-3">
+                        <Carousel>
+                            <Carousel.Item>
+                                <Link as={Link} to="post/1" variant="transparant" className="p-0">
+                                    <img className="d-block w-100" src="https://picsum.photos/id/1/800/400" alt="First slide" />
+                                    <Carousel.Caption>
+                                        <h3>How to make a Brownies</h3>
+                                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                    </Carousel.Caption>
+                                </Link>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <Link as={Link} to="post/2" variant="transparant" className="p-0">
+                                    <img className="d-block w-100" src="https://picsum.photos/id/2/800/400" alt="Second slide" />
+                                    <Carousel.Caption>
+                                        <h3>Tutorial Bernafas</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    </Carousel.Caption>
+                                </Link>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <Link as={Link} to="post/3" variant="transparant" className="p-0">
+                                    <img className="d-block w-100" src="https://picsum.photos/id/3/800/400" alt="Third slide" />
+                                    <Carousel.Caption>
+                                        <h3>Tutorial jadi Kerenn</h3>
+                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                    </Carousel.Caption>
+                                </Link>
+                            </Carousel.Item>
+                        </Carousel>
+                    </Col>
+
                     {posts.map((post) => (
                         <Col key={post.id} md={4}>
                             <Card className="my-3 shadow" style={{border: "1px rgb(155, 155, 155) solid"}}>
@@ -83,7 +125,7 @@ function PostIndex() {
                                 
                                     <small className="position-absolute p-1 px-2 text-light text-opacity-75 bg-dark bg-opacity-50">{post.views} Views</small>
 
-                                    <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />
+                                    {post.postImages ? post.postImages : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
 
                                     <Card.Body className="pt-0">
 

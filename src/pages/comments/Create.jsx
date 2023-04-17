@@ -2,6 +2,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, Form, Card, Spinner } from 'react-bootstrap';
+//toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CommentCreate = ({ id }) => {
 
@@ -24,8 +27,10 @@ const CommentCreate = ({ id }) => {
             });
 
             console.log(response.data);
+            toast.success('Berhasil Menambahkan Komentar')
             setComment("");
         } catch (error) {
+            toast.error('Gagal Menambahkan Komentar')
             console.log(error);
         } finally {
             setIsSubmitting(false);

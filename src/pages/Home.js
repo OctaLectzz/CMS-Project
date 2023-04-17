@@ -26,15 +26,15 @@ function Home() {
                     <Col md={6}>
                         {/* <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid" /> */}
                         <Carousel>
-                                <Carousel.Item>
-                                    <Link as={Link} to="post/1" variant="transparant" className="p-0">
-                                        <img className="d-block w-100" src="https://picsum.photos/id/1/800/500" alt="First slide" />
-                                        <Carousel.Caption>
-                                            <h3>How to make a Brownies</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </Carousel.Caption>
-                                    </Link>
-                                </Carousel.Item>
+                            <Carousel.Item>
+                                <Link as={Link} to="post/1" variant="transparant" className="p-0">
+                                    <img className="d-block w-100" src="https://picsum.photos/id/1/800/500" alt="First slide" />
+                                    <Carousel.Caption>
+                                        <h3>How to make a Brownies</h3>
+                                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                    </Carousel.Caption>
+                                </Link>
+                            </Carousel.Item>
                             <Carousel.Item>
                                 <Link as={Link} to="post/2" variant="transparant" className="p-0">
                                     <img className="d-block w-100" src="https://picsum.photos/id/2/800/500" alt="Second slide" />

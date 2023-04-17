@@ -1,16 +1,18 @@
 import React from "react";
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Container, Row, Col, Image, Form, Button, Spinner, Alert } from "react-bootstrap";
+import { Form, Button, Spinner, Modal } from "react-bootstrap";
 import axios from 'axios';
-import Page from '../../Page';
+//toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function EditProfile() {
 
     const [user, setUser] = useState({});
     const [name, setName] = useState("");
-    // const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("");
     const [tanggal_lahir, setTanggalLahir] = useState("");
     const [jenis_kelamin, setJenisKelamin] = useState("");
     const [alamat, setAlamat] = useState("");
@@ -19,6 +21,10 @@ function EditProfile() {
     const history = useHistory();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+    //modal
+    const [showModal, setShowModal] = useState(false);
+    const handleClose = () => {setShowModal(false);};
+    const handleShow = () => {setShowModal(true);};
 
     // useEffect User
     useEffect(() => {
@@ -31,7 +37,7 @@ function EditProfile() {
             const data = response.data.data;
             setUser(data);
             setName(data.name);
-            // setEmail(data.email);
+            setEmail(data.email);
             setTanggalLahir(data.tanggal_lahir);
             setJenisKelamin(data.jenis_kelamin);
             setAlamat(data.alamat);
@@ -49,7 +55,7 @@ function EditProfile() {
             "http://localhost:8000/api/profile/edit",
             {
                 name: name,
-                // email: email,
+                email: email,
                 tanggal_lahir: tanggal_lahir,
                 jenis_kelamin: jenis_kelamin,
                 alamat: alamat,
@@ -64,113 +70,94 @@ function EditProfile() {
         )
         .then((response) => {
             console.log(response.data);
+            toast.success('Profile Updated Successfully')
             history.push('/profile');
         })
         .catch((error) => {
+            toast.error('Failed Updated Profile')
             setError(error.response.data.message);
         });
         setIsSubmitting(false);
+        handleClose()
     };
 
     return (
-        <Container>
+        <>
+            <Button variant="warning" className="float-end rounded rounded-circle" onClick={handleShow}>
+                <i class="bi bi-pencil"></i>
+            </Button>
 
-            {error && 
-                <Alert variant="danger" className="mt-3">{error}</Alert>
-            }
+            <Modal show={showModal} onHide={handleClose}>
+                    <Form onSubmit={editHandler}>
 
-            <Row className="mt-3 bg-white p-5 shadow-lg">
-                {user.name ? (
-                    <>
-                        <Page pageTitle="Edit Profile" hideTitle={true} />
-                        <Col sm={12} md={6} lg={4} className="d-flex justify-content-center align-items-center">
-                            <div>
-                                <Image
-                                src="https://i.pinimg.com/170x/c2/b9/eb/c2b9eb9c6906da66183cf6bdf89ecce8.jpg"
-                                roundedCircle
-                                width={300}
-                                className="mb-3"
-                                />
-                            </div>
-                        </Col>
-                        <Col sm={12} md={6} lg={8}>
-                            <Form onSubmit={editHandler}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Edit your Profile</Modal.Title>
+                        </Modal.Header>
 
-                                <div className="text-center mt-5">
-                                    <span className="fw-bold">Name : </span>
-                                    <Form.Group className="d-inline-block w-50">
-                                        <Form.Control type="name" value={name} placeholder="Name" className="mb-1" onChange={(event) => setName(event.target.value)} />
+                        <Modal.Body>
+                            {user.name ?
+                                <>
+                                    <Form.Group className="mb-2">
+                                        <span className="fw-bold">Nama : </span>
+                                        <Form.Control type="name" value={name} placeholder="Name" onChange={(event) => setName(event.target.value)} />
                                     </Form.Group>
 
-                                    {/* <br />
-
-                                    <span className="fw-bold">Email : </span>
-                                    <Form.Group  className="d-inline-block w-50">
-                                        <Form.Control type="email" value={email} placeholder="Email" className="mb-1" onChange={(event) => setEmail(event.target.value)} />
-                                    </Form.Group> */}
-                                </div>
-                                
-                                <div className="mt-5 fs-5">
-                                    <p className="mb-2">
+                                    <Form.Group className="mb-2">
+                                        <span className="fw-bold">Email : </span>
+                                        <Form.Control type="email" value={email} placeholder="Email" onChange={(event) => setEmail(event.target.value)} />
+                                    </Form.Group>
+                                    
+                                    <Form.Group className="mb-2">
                                         <span className="fw-bold">Tanggal Lahir : </span>
-                                        <Form.Group className="d-inline-block">
-                                            <Form.Control type="date" value={tanggal_lahir} placeholder="Tanggal Lahir" className="mb-1" onChange={(event) => setTanggalLahir(event.target.value)} />
-                                        </Form.Group>
-                                    </p>
+                                        <Form.Control type="date" value={tanggal_lahir} placeholder="Tanggal Lahir" onChange={(event) => setTanggalLahir(event.target.value)} />
+                                    </Form.Group>
 
-                                    <p className="mb-2">
+                                    <Form.Group className="mb-2">
                                         <span className="fw-bold">Jenis Kelamin : </span>
-                                        <Form.Group className="d-inline-block">
-                                            <Form.Select value={jenis_kelamin} onChange={(event) => setJenisKelamin(event.target.value)}>
-                                                <option selected>Pilih Salah Satu</option>
-                                                <option value="Laki-Laki">Laki-Laki</option>
-                                                <option value="Perempuan">Perempuan</option>
-                                            </Form.Select>
-                                        </Form.Group>
-                                    </p>
+                                        <Form.Select value={jenis_kelamin} onChange={(event) => setJenisKelamin(event.target.value)}>
+                                            <option selected>Pilih Salah Satu</option>
+                                            <option value="Laki-Laki">Laki-Laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </Form.Select>
+                                    </Form.Group>
 
-                                    <p className="mb-2">
-                                        <span className="fw-bold">Role : </span>
-                                        {user.role}
-                                    </p>
-
-                                    <p className="mb-2">
+                                    <Form.Group className="mb-2">
                                         <span className="fw-bold">Alamat : </span>
-                                        <Form.Group className="d-inline-block w-75">
-                                            <Form.Control type="text" value={alamat} placeholder="Alamat" className="mb-1" onChange={(event) => setAlamat(event.target.value)} />
-                                        </Form.Group>
-                                    </p>
+                                        <Form.Control as="textarea" value={alamat} placeholder="Alamat" onChange={(event) => setAlamat(event.target.value)} />
+                                    </Form.Group>            
+
+                                    <Form.Group className="mb-2">
+                                        <span className="fw-bold">Biodata : </span>
+                                        <Form.Control as="textarea" value={biodata} rows={5} placeholder="Masukkan Biodata" onChange={(event) => setBiodata(event.target.value)} />
+                                    </Form.Group>
+                                </>
+                            :
+                                <div className="d-flex align-items-center justify-content-center">
+                                    <Spinner animation="border" className="me-2" />
+                                    <span className="fs-5">Loading...</span>
                                 </div>
-                                
-                                <hr />
-                                <Form.Group>
-                                    <Form.Control as="textarea" value={biodata} rows={5} placeholder="Masukkan Biodata" className="mb-1" onChange={(event) => setBiodata(event.target.value)} />
-                                </Form.Group>
+                            }
+                        </Modal.Body>
 
-                                <Button type="submit" variant="dark" className="mt-3 w-100" disabled={isSubmitting}>
-                                    {isSubmitting ? (
-                                        <div>
-                                            <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                                            <span>Loading</span>
-                                        </div>
-                                    ) : (
-                                        'Update'
-                                    )}
-                                </Button>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            <Button type="submit" variant="dark" disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <div>
+                                        <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                        <span>Loading</span>
+                                    </div>
+                                ) : (
+                                    'Update'
+                                )}
+                            </Button>
+                        </Modal.Footer>
 
-                            </Form>
-                        </Col>
-                    </>
-                ) : (
-                    <div className="d-flex align-items-center justify-content-center">
-                        <Spinner animation="border" className="me-2" />
-                        <span className="fs-5">Loading...</span>
-                    </div>
-                )}
-                
-            </Row>
-
-        </Container>
+                    </Form>
+            </Modal>
+        </>
     );
 
 };

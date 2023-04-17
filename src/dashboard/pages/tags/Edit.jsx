@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
 import Dashboard from '../../AppDashboard';
 import Page from '../../../Page';
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function EditTag() {
@@ -64,18 +67,15 @@ function EditTag() {
             }
         })
         .then(() => {
-
             setIsSubmitting(false);
             //redirect
             history.push('/dashboard/tags');
-
+            toast.success('Tag Updated Successfully!')
         })
         .catch((error) => {
-
-            //assign validation on state
-            setValidation(error.response.data);
+            setIsSubmitting(false);
+            toast.error('Silahkan Periksa Kembali!');
         })
-        
     };
 
 
@@ -84,6 +84,7 @@ function EditTag() {
             <Dashboard />
             <Page pageTitle="Edit Tag" hideTitle={true} />
             <Container>
+                <ToastContainer />
                 <Row>
                     <Col md={12}>
                         <Card className="border-0 rounded shadow-sm">

@@ -1,20 +1,12 @@
 //import hook useState from react
 import { useState } from 'react';
-
 //import component Bootstrap React
-import { Card, Container, Row, Col , Form, Button, Alert, Spinner } from 'react-bootstrap';
-
+import { Modal, Form, Button, Spinner } from 'react-bootstrap';
 //import axios
 import axios from 'axios';
-
-//import hook history dari react router dom
-import { useHistory } from "react-router-dom";
-
-//sidebar
-import Dashboard from '../../AppDashboard';
-
-//page
-import Page from '../../../Page';
+//toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function CreateTag() {
@@ -23,15 +15,14 @@ function CreateTag() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     //state validation
     const [validation, setValidation] = useState({});
-
-    //history
-    const history = useHistory();
-
     //token
     const token = localStorage.getItem('token');
+    //modal
+    const [showModal, setShowModal] = useState(false);
+    const handleClose = () => {setShowModal(false);};
+    const handleShow = () => {setShowModal(true);};
 
     //method "storeTag"
     const storeTag = async (e) => {
@@ -48,68 +39,61 @@ function CreateTag() {
             }
         })
         .then(() => {
-
             setIsSubmitting(false);
-            //redirect
-            history.push('/dashboard/tags');
+            toast.success('Tag Created Successfully!')
+            handleClose()
 
         })
         .catch((error) => {
-
-            //assign validation on state
-            setValidation(error.response.data);
+            setIsSubmitting(false);
+            toast.error('Silahkan Periksa Kembali!');
         })
         
     };
 
     return (
         <>
-            <Dashboard />
-            <Page pageTitle="Create Tag" hideTitle={true} />
-            <Container className="mt-3">
-                <Row>
-                    <Col md="{12}">
-                        <Card className="border-0 rounded shadow-sm">
-                            <Card.Body>
-                            
-                                {
-                                    validation.errors &&
-                                        <Alert variant="danger">
-                                            <ul class="mt-0 mb-0">
-                                                { validation.errors.map((error, index) => (
-                                                    <li key={index}>{ `${error.param} : ${error.msg}` }</li>
-                                                )) }
-                                            </ul>
-                                        </Alert>
-                                }
-                                
-                                <Form onSubmit={ storeTag }>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                                        <Form.Label>NAME</Form.Label>
-                                        <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Masukkan name" />
-                                    </Form.Group>
+            <Button variant="dark" className="mb-3" onClick={handleShow}>
+                TAMBAH TAG
+            </Button>
 
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>DESCRIPTION</Form.Label>
-                                        <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Masukkan Description" />
-                                    </Form.Group>
+            <Modal show={showModal} onHide={handleClose}>
+                <Form onSubmit={ storeTag }>
 
-                                    <Button type="submit" variant="dark" disabled={isSubmitting}>
-                                        {isSubmitting ? (
-                                            <div>
-                                                <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                                                <span>Loading</span>
-                                            </div>
-                                        ) : (
-                                            'SAVE'
-                                        )}
-                                    </Button>
-                                </Form>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create Tag</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>NAME</Form.Label>
+                            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Masukkan name" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>DESCRIPTION</Form.Label>
+                            <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Masukkan Description" />
+                        </Form.Group>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button type="submit" variant="dark" disabled={isSubmitting}>
+                            {isSubmitting ? (
+                                <div>
+                                    <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                    <span>Loading</span>
+                                </div>
+                            ) : (
+                                'SAVE'
+                            )}
+                        </Button>
+                    </Modal.Footer>
+
+                </Form>
+            </Modal>
         </>
     );
 }

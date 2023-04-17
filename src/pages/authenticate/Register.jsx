@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Card, Container, Row, Col, Button } from 'react-bootstrap'
+import { Form, Card, Container, Row, Col, Button, Spinner } from 'react-bootstrap'
 import axios from 'axios';
 import Page from '../../Page';
+//toast
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Register() {
@@ -11,11 +14,13 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [c_password, setConfirmPassword] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            setIsSubmitting(true);
             const response = await axios.post('http://localhost:8000/api/auth/register', {
                 name,
                 email,
@@ -23,16 +28,21 @@ function Register() {
                 c_password,
             });
             localStorage.setItem('access_token', response.data.access_token);
+            toast.success('Register Berhasil')
             // Redirect
-            window.location.href = '/posts';
+            window.location.href = '/profile';
         } catch (error) {
+            toast.error('Gagal membuat Akun, Pastikan data yang anda masukkan Valid!')
             console.error(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
 
     return (
         <Container className="mt-3">
+            <ToastContainer />
 
             <Row className="justify-content-center">
                 <Col md='4'>
@@ -68,8 +78,15 @@ function Register() {
                                 <label for="c_password">Confirm Password</label>
                             </Form.Group>
 
-                            <Button variant="dark" type="submit" className="mt-3 w-100">
-                                Register
+                            <Button type="submit" variant="dark" className="mt-3 w-100" disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <div>
+                                        <Spinner animation="border" className="me-2 spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                                        <span>Loading</span>
+                                    </div>
+                                ) : (
+                                    'Register'
+                                )}
                             </Button>
                         </Form>
 

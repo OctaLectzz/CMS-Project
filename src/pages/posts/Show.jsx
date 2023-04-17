@@ -4,6 +4,9 @@ import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import Page from '../../Page';
 import CommentShow from './../comments/Show';
+//toast
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function SinglePost() {
@@ -30,6 +33,7 @@ function SinglePost() {
 
   return (
     <Container className="mt-3">
+      <ToastContainer />
       <Row className="justify-content-center bg-white bg-opacity-75 py-5 shadow">
         {post.title ? (
           <>

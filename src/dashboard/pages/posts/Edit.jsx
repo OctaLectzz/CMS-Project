@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
 import Dashboard from '../../AppDashboard';
 import Page from '../../../Page';
+//toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function EditPost() {
@@ -13,9 +16,6 @@ function EditPost() {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    //state validation
-    const [validation, setValidation] = useState({});
 
     //history
     const history = useHistory();
@@ -83,18 +83,15 @@ function EditPost() {
             }
         })
         .then(() => {
-
             setIsSubmitting(false);
+            toast.success('Post Updated Successfully!')
             //redirect
             history.push('/dashboard/posts');
-
         })
         .catch((error) => {
-
-            //assign validation on state
-            setValidation(error.response.data);
+            setIsSubmitting(false);
+            toast.error('Silahkan Periksa Kembali!');
         })
-        
     };
 
 
@@ -103,22 +100,12 @@ function EditPost() {
             <Dashboard />
             <Page pageTitle="Edit Post" hideTitle={true} />
             <Container>
+                <ToastContainer />
                 <Row>
                     <Col md={12}>
                         <Card className="border-0 rounded shadow-sm">
                             {post.title ? (
                                 <Card.Body>
-
-                                    {
-                                        validation.errors &&
-                                            <Alert variant="danger">
-                                                <ul class="mt-0 mb-0">
-                                                    { validation.errors.map((error, index) => (
-                                                        <li key={index}>{ `${error.param} : ${error.msg}` }</li>
-                                                    )) }
-                                                </ul>
-                                            </Alert>
-                                    }
 
                                     <Form onSubmit={ updatePost }>
                                         <Form.Group className="mb-3" controlId="formBasicTitle">

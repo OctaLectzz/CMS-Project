@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Form, Modal, Spinner } from 'react-bootstrap';
+//toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CommentReply = ({postId, commentId}) => {
 
@@ -32,11 +34,12 @@ const CommentReply = ({postId, commentId}) => {
             }
         })
         .then(() => {
-            console.log(response.data);
+            toast.success('Berhasil Membalas Komentar')
             handleClose();
         })
         .catch((error) => {
             console.log(error);
+            toast.error('Gagal Membalas Komentar')
             handleClose();
         })
         setIsSubmitting(false);
