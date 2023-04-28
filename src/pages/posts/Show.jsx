@@ -54,12 +54,12 @@ function SinglePost() {
                 <p>
                   <small>By : <span className="text-primary">{post.created_by}</span></small>
                 </p>
-                {post.postImages ? <img src={`http://localhost:8000/storage/postImages/${post.postImages}`} alt="Random" className="img-fluid mb-2" /> : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
+                {post.image ? <img src={post.image} alt="Random" className="img-fluid mb-2" /> : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
               </div>
 
               <div className="mb-4 text-center">
                 {categories.map((category) => (
-                  <Link key={category.id} to={`/posts/${category.name}`} className="m-1 text-decoration-none d-inline-block px-2 text-info" style={{border: "1px solid", borderRadius: "20%"}}>{category.name}</Link>
+                  <Link key={category.id} to={`/posts/category/${category.name}`} className="m-1 text-decoration-none d-inline-block px-2 text-info" style={{border: "1px solid", borderRadius: "20%"}}>{category.name}</Link>
                 ))}
               </div>
 
@@ -71,7 +71,7 @@ function SinglePost() {
 
               <div>
                 {tags.map((tag) => (
-                  <Link key={tag.id} to={`/posts/${tag.name}`} className="mx-1 text-decoration-none d-inline-block">#{tag.name}</Link>
+                  <Link key={tag.id} to={`/posts/tag/${tag.name}`} className="mx-1 text-decoration-none d-inline-block">#{tag.name}</Link>
                 ))}
               </div>
             </Col>

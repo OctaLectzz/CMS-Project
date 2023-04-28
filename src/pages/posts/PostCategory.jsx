@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 
 //import component Bootstrap React
-import { Card, Container, Row, Col, Button, Pagination, Spinner, Carousel } from 'react-bootstrap';
+import { Card, Container, Row, Col, Button, Carousel, Spinner } from 'react-bootstrap';
 
 //import react router dom
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 //import axios
 import axios from 'axios';
@@ -13,54 +13,39 @@ import axios from 'axios';
 //import Title Page
 import Page from '../../Page';
 
-function PostIndex() {
+function PostCategory() {
 
     //define state
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    // Paginate
-    const [currentPage, setCurrentPage] = useState(1); //menambah state currentPage
-    const [totalPages, setTotalPages] = useState(1); //menambah state totalPages
+    const { category } = useParams("");
 
 
     //useEffect hook
     useEffect(() => {
         fectData();
-    }, [currentPage]);  // fetch data every time the current page changes
+    }, []);  // fetch data every time the current page changes
 
     
     //function "fetchData"
     const fectData = async () => {
 
         ///fetching
-        const response = await axios.get(`http://localhost:8000/api/posts?page=${currentPage}`);
+        let api = `http://localhost:8000/api/posts`;
+        if(category) {
+            api += `?category=${category}`
+        }
 
         //get response data
+        const response = await axios.get(api);
         const data = await response.data.data;
 
         //assign response data to state "posts"
         setPosts(data);
 
-        //set state "totalPages"
-        setTotalPages(response.data.meta.last_page);
-
         // set state "loading" menjadi false setelah data diambil
         setLoading(false);
     }
-
-
-    // Pagination
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-          setCurrentPage(currentPage + 1);
-        }
-    };
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-          setCurrentPage(currentPage - 1);
-        }
-    };
 
 
     return (
@@ -71,8 +56,6 @@ function PostIndex() {
                     <span className="fs-5">Loading...</span>
                 </div>
             ) : (
-                <>
-
                 <Row>
                     <Col md={12} className="mb-3">
                         <div className="d-flex justify-content-center">
@@ -84,37 +67,9 @@ function PostIndex() {
                         <p className="text-center mt-0 fs-5">Create Your posts in Lotus now!</p>
                     </Col>
 
-                    <Col md={12} className="mb-3">
-                        <Carousel>
-                            <Carousel.Item>
-                                <Link as={Link} to="post/1" variant="transparant" className="p-0">
-                                    <img className="d-block w-100" src="https://picsum.photos/id/1/800/400" alt="First slide" />
-                                    <Carousel.Caption>
-                                        <h3>How to make a Brownies</h3>
-                                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                    </Carousel.Caption>
-                                </Link>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <Link as={Link} to="post/2" variant="transparant" className="p-0">
-                                    <img className="d-block w-100" src="https://picsum.photos/id/2/800/400" alt="Second slide" />
-                                    <Carousel.Caption>
-                                        <h3>Tutorial Bernafas</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                    </Carousel.Caption>
-                                </Link>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <Link as={Link} to="post/3" variant="transparant" className="p-0">
-                                    <img className="d-block w-100" src="https://picsum.photos/id/3/800/400" alt="Third slide" />
-                                    <Carousel.Caption>
-                                        <h3>Tutorial jadi Kerenn</h3>
-                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                    </Carousel.Caption>
-                                </Link>
-                            </Carousel.Item>
-                        </Carousel>
-                    </Col>
+
+                    <h1>Posts in Category {category}</h1>
+                    <hr />
 
                     {posts.map((post) => (
                         <Col key={post.id} md={4}>
@@ -151,25 +106,9 @@ function PostIndex() {
                         </Col>
                     ))}
                 </Row>
-
-                <Pagination className="float-end mt-2">
-                    <Pagination.Prev onClick={handlePrevPage} disabled={currentPage === 1} />
-                    {[...Array(totalPages)].map((_, index) => (
-                    <Pagination.Item
-                        key={index}
-                        active={index + 1 === currentPage}
-                        onClick={() => setCurrentPage(index + 1)}
-                    >
-                        {index + 1}
-                    </Pagination.Item>
-                    ))}
-                    <Pagination.Next onClick={handleNextPage} disabled={currentPage === totalPages} />
-                </Pagination>
-                
-                </>
             )}
         </Container>
     );
 }
 
-export default PostIndex;
+export default PostCategory;

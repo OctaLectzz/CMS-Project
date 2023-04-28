@@ -19,11 +19,13 @@ import ResetPassword from './pages/authenticate/ResetPassword';
 import PostIndex from './pages/posts/Index'   // import component Post Index
 import SinglePost from './pages/posts/Show';  // import component Post Show
 import PostTag from './pages/posts/PostTag';  // import component Post Tag
+import PostCategory from './pages/posts/PostCategory';
 
 // Dashboard //
 import DashboardHome from './dashboard/pages/Home';
 // Posts
 import DashboardPost from './dashboard/pages/posts';
+import CreatePost from './dashboard/pages/posts/Create';
 import EditPost from './dashboard/pages/posts/Edit';
 // Tags
 import DashboardTag from './dashboard/pages/tags';
@@ -158,7 +160,8 @@ function App() {
         {/* Posts */}
         <Route exact path="/posts" component={PostIndex} />
         <Route exact path="/post/:id" component={SinglePost} />
-        <Route exact path="/posts/:tag" component={PostTag} />
+        <Route exact path="/posts/tag/:tag" component={PostTag} />
+        <Route exact path="/posts/category/:category" component={PostCategory} />
         {/* Authentiation */}
         <Guest exact path="/login" component={Login} />
         <Guest exact path="/register" component={Regiser} />
@@ -172,6 +175,7 @@ function App() {
         <Auth exact path="/dashboard" component={DashboardHome} />
         {/* Dashboard Posts */}
         <Auth exact path="/dashboard/posts" component={DashboardPost} />
+        <Auth exact path="/dashboard/posts/create" component={CreatePost} />
         <Auth exact path="/dashboard/posts/edit/:id" component={EditPost} />
         {/* Dashboard Tags */}
         <Auth exact path="/dashboard/tags" component={DashboardTag} />

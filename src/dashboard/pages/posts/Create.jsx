@@ -12,7 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function CreatePost() {
 
     //state
-    const [postImages, setPostImages] = useState('');
+    const [image, setImage] = useState('');
+    const [imagePreview, setImagePreview] = useState(null);
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,15 +37,14 @@ function CreatePost() {
     };
     // Category
     const [categories, setCategories] = useState([]);
-    const [category, setCategory] = useState([]);
-    const handleCategoryChange = (event) => { 
-        const categoryId = parseInt(event.target.value); 
-        if (event.target.checked) { 
-            setCategory([...category, categoryId]); 
-        } else { 
-            setCategory(category.filter((id) => id !== categoryId)); 
-        } 
-    };
+    const [category, setCategory] = useState('');
+
+    // Image
+    function handleImage(event) {
+        const file = event.target.files[0];
+        setImage(file);
+        setImagePreview(URL.createObjectURL(file));
+    }
 
     useEffect(() => {
 
@@ -56,17 +56,20 @@ function CreatePost() {
     // method "storePost"
     const storePost = async (e) => {
         e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("body", body);
+        tag.forEach((id) => formData.append("tags[]", id));
+        formData.append("categories", category)
+        formData.append("image", image);
         
         setIsSubmitting(true);
         // send data to server
-        await axios.post('http://localhost:8000/api/posts/create', {
-            postImages: postImages,
-            title: title,
-            body: body,
-            tags: tag,
-            categories: category
-        }, {
+        await axios.post('http://localhost:8000/api/posts/create',
+        formData, {
             headers: {
+                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`
             }
         })
@@ -75,6 +78,7 @@ function CreatePost() {
             toast.success('Post Created Successfully!')
             //redirect
             handleClose()
+            window.location.reload()
         })
         .catch((error) => {
             setIsSubmitting(false);
@@ -84,12 +88,12 @@ function CreatePost() {
 
     const getTags = async () => {
         const response = await axios.get('http://localhost:8000/api/tagpost');
-        const data = await response.data.data;
+        const data = response.data.data;
         setTags(data);
     }
     const getCategories = async () => {
         const response = await axios.get('http://localhost:8000/api/categorypost');
-        const data = await response.data.data;
+        const data = response.data.data;
         setCategories(data);
     }
 
@@ -100,17 +104,30 @@ function CreatePost() {
             </Button>
 
             <Modal show={showModal} onHide={handleClose}>
-                <Form onSubmit={ storePost } enctype="multipart/form-data">
+                <Form onSubmit={ storePost } encType="multipart/form-data">
 
                     <Modal.Header closeButton>
                         <Modal.Title>Create Post</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <Form.Group className="mb-3" controlId="formBasicImage">
-                            <Form.Label>IMAGE</Form.Label>
-                            <Form.Control type="file" value={postImages} onChange={(e) => setPostImages(e.target.value)} placeholder="Choose your Image" />
-                        </Form.Group>
+                        <div className="mb-3">
+                            <label className="form-label d-block">Image Post</label>
+                            {imagePreview && (
+                                <img
+                                src={imagePreview}
+                                alt="selected file"
+                                className="mb-3 rounded-2"
+                                height={100}
+                                />
+                            )}
+
+                            <input
+                                type="file"
+                                className="form-control"
+                                onChange={handleImage}
+                            />
+                        </div>
 
                         <Form.Group className="mb-3" controlId="formBasicTitle">
                             <Form.Label>TITLE</Form.Label>
@@ -124,20 +141,20 @@ function CreatePost() {
 
                         <div className="mb-3">
                             <Form.Label className="d-flex">CATEGORIES</Form.Label>
-                            {categories.map((category) => (
-                                <div key={category.id} className="form-check-inline me-2 mb-2">
-                                    <input type="checkbox" class="btn-check" id={`Category ${category.id}`} value={category.id} onChange={handleCategoryChange} />
-                                    <label class="btn btn-outline-success" for={`Category ${category.id}`}>{category.name}</label><br />
-                                </div>
-                            ))}
+                            <select className="form-select" onChange={(e) => setCategory(e.target.value)}>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>{category.name}</option>
+                                ))}
+                            </select>
                         </div>
+
 
                         <div className="mb-3">
                             <Form.Label className="d-flex">TAGS</Form.Label>
                             {tags.map((tag) => (
                                 <div key={tag.id} className="form-check-inline me-2 mb-2">
-                                    <input type="checkbox" class="btn-check" id={`Tag ${tag.id}`} value={tag.id} onChange={handleTagChange} />
-                                    <label class="btn btn-outline-primary" for={`Tag ${tag.id}`}>{tag.name}</label><br />
+                                    <input type="checkbox" class="btn-check" id={`tag${tag.id}`} value={tag.id} onChange={handleTagChange} />
+                                    <label class="btn btn-outline-primary" htmlFor={`tag${tag.id}`}>{tag.name}</label><br />
                                 </div>
                             ))}
                         </div>

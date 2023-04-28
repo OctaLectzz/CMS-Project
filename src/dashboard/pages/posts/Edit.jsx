@@ -40,14 +40,14 @@ function EditPost() {
     // Category
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState([]);
-    const handleCategoryChange = (event) => { 
-        const categoryId = parseInt(event.target.value); 
-        if (event.target.checked) { 
-            setCategory([...category, categoryId]); 
-        } else { 
-            setCategory(category.filter((id) => id !== categoryId)); 
-        } 
-    };
+    const handleCategoryChange = (event) => {
+        const categoryId = parseInt(event.target.value);
+        if (event.target.checked) {
+          setCategory([categoryId]);
+        } else {
+          setCategory([]);
+        }
+      };      
 
 
     //hook useEffect
@@ -137,13 +137,14 @@ function EditPost() {
 
                                         <div className="mb-3">
                                             <Form.Label className="d-flex">CATEGORIES</Form.Label>
-                                            {categories.map((category) => (
-                                                <div key={category.id} className="form-check-inline me-2 mb-2">
-                                                    <input type="checkbox" class="btn-check" id={category.id} value={category.id} onChange={handleCategoryChange} />
-                                                    <label class="btn btn-outline-success" for={category.id}>{category.name}</label><br />
-                                                </div>
-                                            ))}
+                                            <select className="form-select" onChange={handleCategoryChange}>
+                                                <option value="">Pilih Kategori</option>
+                                                {categories.map((category) => (
+                                                <option key={category.id} value={category.id}>{category.name}</option>
+                                                ))}
+                                            </select>
                                         </div>
+
 
                                         <div className="mb-3">
                                             <Form.Label className="d-flex">TAGS</Form.Label>

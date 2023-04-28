@@ -19,6 +19,7 @@ function PostTag() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const { tag } = useParams("");
+    const { category } = useParams("");
 
 
     //useEffect hook
@@ -34,6 +35,9 @@ function PostTag() {
         let api = `http://localhost:8000/api/posts`;
         if(tag) {
             api += `?tag=${tag}`
+        }
+        if(category) {
+            api += `?category=${category}`
         }
 
         //get response data
@@ -67,37 +71,8 @@ function PostTag() {
                         <p className="text-center mt-0 fs-5">Create Your posts in Lotus now!</p>
                     </Col>
 
-                    <Col md={12} className="mb-3">
-                        <Carousel>
-                            <Carousel.Item>
-                                <Link as={Link} to="post/1" variant="transparant" className="p-0">
-                                    <img className="d-block w-100" src="https://picsum.photos/id/1/800/400" alt="First slide" />
-                                    <Carousel.Caption>
-                                        <h3>How to make a Brownies</h3>
-                                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                    </Carousel.Caption>
-                                </Link>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <Link as={Link} to="post/2" variant="transparant" className="p-0">
-                                    <img className="d-block w-100" src="https://picsum.photos/id/2/800/400" alt="Second slide" />
-                                    <Carousel.Caption>
-                                        <h3>Tutorial Bernafas</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                    </Carousel.Caption>
-                                </Link>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <Link as={Link} to="post/3" variant="transparant" className="p-0">
-                                    <img className="d-block w-100" src="https://picsum.photos/id/3/800/400" alt="Third slide" />
-                                    <Carousel.Caption>
-                                        <h3>Tutorial jadi Kerenn</h3>
-                                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                    </Carousel.Caption>
-                                </Link>
-                            </Carousel.Item>
-                        </Carousel>
-                    </Col>
+                    <h1>Posts in Tag {tag}</h1>
+                    <hr />
 
                     {posts.map((post) => (
                         <Col key={post.id} md={4}>
@@ -108,7 +83,7 @@ function PostTag() {
                                 
                                     <small className="position-absolute p-1 px-2 text-light text-opacity-75 bg-dark bg-opacity-50">{post.views} Views</small>
 
-                                    <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />
+                                    {post.image ? <img src={post.image} alt="Random" className="img-fluid mb-2" /> : <img src="https://picsum.photos/500/300" alt="Random" className="img-fluid mb-2" />}
 
                                     <Card.Body className="pt-0">
 

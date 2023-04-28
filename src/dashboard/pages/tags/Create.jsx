@@ -42,7 +42,7 @@ function CreateTag() {
             setIsSubmitting(false);
             toast.success('Tag Created Successfully!')
             handleClose()
-
+            window.location.reload()
         })
         .catch((error) => {
             setIsSubmitting(false);

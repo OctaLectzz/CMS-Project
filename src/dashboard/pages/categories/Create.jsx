@@ -42,7 +42,7 @@ function CreateCategory() {
             setIsSubmitting(false);
             toast.success('Category Created Successfully!')
             handleClose()
-
+            window.location.reload()
         })
         .catch((error) => {
             setIsSubmitting(false);
